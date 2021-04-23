@@ -17,7 +17,7 @@ const LoginForm = ({ setSelectedForm }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [formError, setFormError] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    const [userActive, setUserActive] = useState(false);
+    const [userActive, setUserActive] = useState(true);
     const [user, setUser] = useState(null);
 
     //Guarda-Cambia en el estado los valores de los inputs 
@@ -52,9 +52,25 @@ const LoginForm = ({ setSelectedForm }) => {
 
         if (formOk) {
             console.log("formulario correcto");
+            console.log("Login enviado...");
+            setIsLoading(true);
+            
+            firebase
+            .auth()
+            .signInWithEmailAndPassword( formData.email, formData.password)
+            .then(response  => {
+                setUser(response.user);
+                setUserActive(response.user.emailVerified);
+                //Si evaluo el estado no entra...
+                console.log(response.user.emailVerified);
+                if (!response.user.emailVerified) {
+                    toast.warning("Debes verificar la cuenta.")    
+                }
+            })
+            .catch( error =>  handlerErrors(error.code))
+            .finally(() => setIsLoading(false));
         }
-        console.log("Login enviado...");
-        console.log(formData);
+
     };
 
     return (
@@ -94,16 +110,63 @@ const LoginForm = ({ setSelectedForm }) => {
                         ""
                     }
                 </Form.Field>
-                <Button>Iniciar sesión</Button>
+                <Button loading={isLoading}>Iniciar sesión</Button>
             </Form>
+
+            {   //Si el usuario no esta activo, se muestra componente para reenvio de email
+                !userActive ?
+                    <ButtonReSendEmailVerification user={user} setIsLoading={setIsLoading} setUserActive={setUserActive}/>
+                :
+                ""   
+            }        
+
             <div className="login-form__options">
                 <p onClick={() => setSelectedForm(null)}>Volver</p>
-                <p>¿Aún no te has registrado?{" "}
+                <p>¿No te has registrado?{" "}
                     <span onClick={() => setSelectedForm("register")}>Regístrate</span>
                 </p>
             </div>
         </div>
     )
 }
+
+//Componente que al clicarlo reevia una confirmacion al email
+const ButtonReSendEmailVerification = ({ user, setIsLoading, setUserActive }) => {
+
+    const reSendVerificationEmail = () => {
+        user.sendEmailVerification()
+        .then(() => toast.success("Se ha enviado el email de verificación."))
+        .catch( (error) => handlerErrors(error))
+        .finally( () => {
+            setIsLoading(false);
+            setUserActive(true);
+        })
+    };
+
+    return (
+        <div className="resend-verification-email">
+            <p>Si no has recibido el email de verificación puedes 
+                volver a enviarlo haciendo click <span onClick={reSendVerificationEmail}>aquí.</span>
+            </p>
+        </div>
+    )
+};
+//Manejador del error pasado por parametro, y lanza un toast
+const handlerErrors = (code) => {
+
+    switch (code.code) {
+        case "auth/wrong-password": 
+            toast.warning("El usuario o la contraseña no son correctos.");
+            break;
+        case "auth/too-many-requests":
+            toast.warning("Has enviado demasiadas solicitudes de confirmación.");
+        break;
+        case "auth/user-not-found":
+            toast.warning("El usuario o la contraseña no son correctos.");
+        break;
+        default:
+            break;
+    }
+};
 
 export default LoginForm;

@@ -74,8 +74,9 @@ const RegisterForm = ({ setSelectedForm }) => {
                     setIsLoading(false);
                     setSelectedForm(null);//Redirecciona al menu de eleccion de formulario (Login - )
                 });
-
+                
         }
+
     };
     //Conecta con Firebase y Registra el nombre de usuario en la bbdd del user actual
     const changeUserName = () => {
