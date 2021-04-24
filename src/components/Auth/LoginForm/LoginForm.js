@@ -27,7 +27,7 @@ const LoginForm = ({ setSelectedForm }) => {
             ...formData,
             [event.target.name]: event.target.value
         });
-        console.log(formData);
+        // console.log(formData);
     };
 
     const handlerShowPassword = () => {
@@ -136,7 +136,7 @@ const ButtonReSendEmailVerification = ({ user, setIsLoading, setUserActive }) =>
     const reSendVerificationEmail = () => {
         user.sendEmailVerification()
         .then(() => toast.success("Se ha enviado el email de verificación."))
-        .catch( (error) => handlerErrors(error))
+        .catch( error => handlerErrors(error.code))
         .finally( () => {
             setIsLoading(false);
             setUserActive(true);
@@ -153,8 +153,8 @@ const ButtonReSendEmailVerification = ({ user, setIsLoading, setUserActive }) =>
 };
 //Manejador del error pasado por parametro, y lanza un toast
 const handlerErrors = (code) => {
-
-    switch (code.code) {
+    console.log(code);
+    switch (code) {
         case "auth/wrong-password": 
             toast.warning("El usuario o la contraseña no son correctos.");
             break;
@@ -167,6 +167,7 @@ const handlerErrors = (code) => {
         default:
             break;
     }
+
 };
 
 export default LoginForm;

@@ -21,7 +21,6 @@ const RegisterForm = ({ setSelectedForm }) => {
     const [formError, setFormError] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
-
     //Guarda-Cambia en el estado los valores de los inputs 
     const handlerChange = (event) => {
         //al cambiar el campo, lo añade con ...spread y sobrescribe el cambiado
@@ -65,7 +64,6 @@ const RegisterForm = ({ setSelectedForm }) => {
                 .createUserWithEmailAndPassword(formData.email, formData.password)
                 .then(() => {
                     // toast.success("Registro completado");
-
                     changeUserName();
                     sendEmailVerification();
                 })
