@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Icon, Form, Input } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
-import { isValidateEmail } from "../../../utils/validations";
-import firebase from "../../../utils/firebase";
+import { isValidateEmail } from "../../../utils/Validations";
+import firebase from "../../../utils/Firebase";
 import "firebase/auth";
 
 import "./LoginForm.scss";
@@ -51,8 +51,6 @@ const LoginForm = ({ setSelectedForm }) => {
         setFormError(errors);
 
         if (formOk) {
-            console.log("formulario correcto");
-            console.log("Login enviado...");
             setIsLoading(true);
             
             firebase
@@ -62,7 +60,6 @@ const LoginForm = ({ setSelectedForm }) => {
                 setUser(response.user);
                 setUserActive(response.user.emailVerified);
                 //Si evaluo el estado no entra...
-                console.log(response.user.emailVerified);
                 if (!response.user.emailVerified) {
                     toast.warning("Debes verificar la cuenta.")    
                 }

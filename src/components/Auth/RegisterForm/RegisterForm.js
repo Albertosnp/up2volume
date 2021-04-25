@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Icon, Button, Form, Input } from 'semantic-ui-react';
 import { toast } from 'react-toastify'
-import fireBase from "../../../utils/firebase"
-import { isValidateEmail } from '../../../utils/validations';
+import fireBase from "../../../utils/Firebase"
+import { isValidateEmail } from '../../../utils/Validations';
 
 import "firebase/auth";
 import "./RegisterForm.scss";

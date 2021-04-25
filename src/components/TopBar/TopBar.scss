@@ -1,0 +1,80 @@
+@import "../../scss/index.scss";
+
+.top-bar {
+  height: 50px;
+  background-color: $background-grey-dark-light;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+
+  &__left {
+    i {
+      font-size: 20px !important;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    color: $font-grey;
+
+    img {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+    }
+
+    .ui.item.dropdown {
+      display: flex;
+      align-items: center;
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+      color: $font-grey;
+
+      span {
+        display: flex;
+        align-items: center;
+      }
+      span:hover {
+        color: $font-light;
+        text-decoration: underline $font-light;
+      }
+
+      .icon:hover {
+        text-decoration: none !important;
+      }
+
+      .menu {
+        background-color: $background-grey-dark;
+        color: $font-light;
+        width: 200px;
+        box-shadow: 0px 0px 13px 0px #0000009f;
+
+        .item,
+        a {
+            color: $font-light;
+        }
+
+        .item{
+            padding: .78571429rem 2rem !important;
+        }
+
+        .item:hover{
+            background-color: $background-grey;
+        }
+      }
+    }
+    .menu.transition.visible {
+      margin-top: 10px !important;
+    }
+  }
+}

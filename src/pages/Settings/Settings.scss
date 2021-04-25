@@ -1,0 +1,29 @@
+@import "../../scss/index.scss";
+
+.settings {
+    margin: 50px 100px 0 100px;
+    > h1 {
+        font-size: 40px;
+        margin-bottom: 50px;
+    }
+
+    .avatar-name {
+        display: flex;
+        align-items: center;
+
+        .user-avatar{
+            display: table;
+            margin: 0 !important;
+            // border: 2px solid #9a9a9a;
+            // border-style: dashed;
+            // border-radius: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+
+            .ui.image {
+                width: 100px;
+                border-radius: 50px;
+            }
+        }
+    }
+}

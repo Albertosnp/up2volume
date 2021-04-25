@@ -1,9 +1,10 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
 import { Home } from '../pages/Home/Home'
+import { Settings } from '../pages/Settings/Settings'
 
 
-export const Routes = () => {
+export const Routes = ({ user }) => {
     return (
         <Switch>
             <Route path="/" exact >
@@ -13,7 +14,7 @@ export const Routes = () => {
                 <h1>Artistas</h1>
             </Route>
             <Route path="/settings" exact >
-                <h1>Ajustes de cuenta</h1>
+                <Settings user={user} />
             </Route>
         </Switch>
     )
