@@ -4,7 +4,7 @@ import { Home } from '../pages/Home/Home'
 import { Settings } from '../pages/Settings/Settings'
 
 
-export const Routes = ({ user }) => {
+export const Routes = ({ user, setReloadApp }) => {
     return (
         <Switch>
             <Route path="/" exact >
@@ -14,7 +14,7 @@ export const Routes = ({ user }) => {
                 <h1>Artistas</h1>
             </Route>
             <Route path="/settings" exact >
-                <Settings user={user} />
+                <Settings user={user} setReloadApp={setReloadApp}/>
             </Route>
         </Switch>
     )

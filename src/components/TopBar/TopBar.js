@@ -18,7 +18,7 @@ const TopBar = ({ user, history }) => {
 
   const trigger = (
     <span>
-        <Image src={UserImage} />
+        <Image src={user.photoURL ? user.photoURL : UserImage} />
         {user.displayName}
     </span>
   )

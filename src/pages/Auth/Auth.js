@@ -29,7 +29,7 @@ export const Auth = () => {
             <div className="auth__dark" />
             <div className="auth__box" >
                 <div className="auth__box-logo">
-                    <img src={LogoNameWhite} alt="up2volume" />
+                    {/* <img src={LogoNameWhite} alt="up2volume" /> */}
                 </div>
                 { handlerForm() }
             </div>      
