@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import firebase from './utils/Firebase';
 import "firebase/auth"
 import { Auth } from './pages/Auth/Auth';
@@ -12,7 +12,6 @@ function App() {
   const [reloadApp, setReloadApp] = useState(false)
 
   firebase.auth().onAuthStateChanged(currentUser => {
-
     //Si el usuario ha confirmado el email... ( ? por si la propiedad no existieses )
     if (currentUser?.emailVerified) setUser(currentUser);
     else{

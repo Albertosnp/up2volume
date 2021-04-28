@@ -6,7 +6,7 @@ import "./BasicModal.scss";
 export const BasicModal = ({ show, setShow, title, children }) => {
     
     const onClose = () => {
-        setShow(false);
+        setShow( false );
     };
     
     return (

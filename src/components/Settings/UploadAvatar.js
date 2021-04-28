@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { Image } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
-import avatarDefault from "../../assets/png/user.png";
+import AvatarDefault from "../../assets/png/user.png";
 import firebase from "../../utils/Firebase";
 import "firebase/storage";
 import "firebase/database"
@@ -16,9 +16,11 @@ export const UploadAvatar = ({ user, setReloadApp }) => {
   const onDrop = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];  
     const isGoodSize = (300000 > file.size)
-
+    
     if (isGoodSize) {
-        setAvatarUrl(URL.createObjectURL(file));
+        //TODO averiguar porque no crea el objeto
+        const url = URL.createObjectURL(file)
+        setAvatarUrl(url);console.log(url);
         uploadImage(file).then(() => updateUserAvatar());
     }
     if (!isGoodSize) toast.warning("El avatar no puede exceder de 300kb");
@@ -58,9 +60,9 @@ export const UploadAvatar = ({ user, setReloadApp }) => {
     <div className="user-avatar" {...getRootProps()}>
       <input {...getInputProps()} />
       {isDragActive ? (
-        <Image src={avatarDefault} />
+        <Image src={AvatarDefault} />
       ) : ( 
-        <Image src={avatarUrl ? avatarUrl : avatarDefault} />
+        <Image src={user.photoURL ? user.photoURL : AvatarDefault} />
       )}
     </div>
   );

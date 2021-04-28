@@ -16,6 +16,7 @@ code {
 }
 
 .Toastify {
+  font-weight: bold;
   //Hace que el toast sea de largo como la ventana y pegado arriba
   .Toastify__toast-container--top-center {
     width: 100%;
@@ -29,6 +30,46 @@ code {
     //Alinea la X al medio
     .Toastify__close-button{
       align-self: center;
+    }
+  }
+}
+
+.ui.form {
+  .field {
+    .input {
+      input {
+        background-color: $background-grey;
+        font-size: 16px;
+        color: $font-grey;
+        border: 0;
+        
+        &:hover,
+        &:active,
+        &:focus {
+          background-color: $background-grey-light-hover;
+          border: 0;
+          color: $font-light;
+        }
+
+        
+      }
+
+      .eye {
+        color: $font-light;
+      }
+    }
+  }
+  .ui.button {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 50px;
+    color: $font-dark;
+    font-weight: bold;
+    font-size: 16px;
+
+    &:hover {
+      background-color: $primary-blue;
+      color: $font-light;
     }
   }
 }
