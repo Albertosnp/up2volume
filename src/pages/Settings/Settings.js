@@ -5,6 +5,7 @@ import { BasicModal } from '../../components/Modal/BasicModal/BasicModal';
 import { UserEmail } from '../../components/Settings/UserEmail';
 
 import "./Settings.scss";
+import { UserPassword } from '../../components/Settings/UserPassword';
 
 
 export const Settings = ({ user, setReloadApp }) => {
@@ -28,7 +29,12 @@ export const Settings = ({ user, setReloadApp }) => {
                 setShowModal={setShowModal} 
                 setTitleModal={setTitleModal} 
                 setContentModal={setContentModal}/> 
+
+            <UserPassword />
+
             <BasicModal show={showModal} setShow={setShowModal} title={titleModal} children={contentModal} />
+
+            
         </div>
     )
 }
