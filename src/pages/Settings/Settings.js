@@ -30,7 +30,10 @@ export const Settings = ({ user, setReloadApp }) => {
                 setTitleModal={setTitleModal} 
                 setContentModal={setContentModal}/> 
 
-            <UserPassword />
+            <UserPassword 
+                setShowModal={setShowModal} 
+                setTitleModal={setTitleModal} 
+                setContentModal={setContentModal} />
 
             <BasicModal show={showModal} setShow={setShowModal} title={titleModal} children={contentModal} />
 

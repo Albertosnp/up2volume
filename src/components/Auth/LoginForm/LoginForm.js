@@ -150,7 +150,6 @@ const ButtonReSendEmailVerification = ({ user, setIsLoading, setUserActive }) =>
 };
 //Manejador del error pasado por parametro, y lanza un toast
 const handlerErrors = (code) => {
-    console.log(code);
     switch (code) {
         case "auth/wrong-password": 
             toast.warning("El usuario o la contraseña no son correctos.");
