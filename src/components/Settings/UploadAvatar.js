@@ -14,13 +14,15 @@ export const UploadAvatar = ({ user, setReloadApp }) => {
 
   //No permite subir imagenes de mas de 300kb
   const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];  
+    
+    const file = acceptedFiles[0]; 
+    console.log(file); 
     const isGoodSize = (300000 > file.size)
     
     if (isGoodSize) {
         //TODO averiguar porque no crea el objeto
         const url = URL.createObjectURL(file)
-        setAvatarUrl(url);console.log(url);
+        setAvatarUrl(url);
         uploadImage(file).then(() => updateUserAvatar());
     }
     if (!isGoodSize) toast.warning("El avatar no puede exceder de 300kb");
@@ -53,7 +55,7 @@ export const UploadAvatar = ({ user, setReloadApp }) => {
         await firebase.auth().currentUser.updateProfile({ photoURL: response});
         setReloadApp( prevState => !prevState); // Hace recargar todos los componentes
     })
-    .catch((err) => toast.error("Error al actualizar el avatar"));
+    .catch(() => toast.error("Error al actualizar el avatar"));
   };
 
   return (

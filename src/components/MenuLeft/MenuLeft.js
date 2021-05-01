@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Icon, Menu } from "semantic-ui-react";
 import { isUserAdmin } from "../../utils/Api";
+import { AddArtistForm } from "../Artists/AddArtistForm/AddArtistForm";
 import { BasicModal } from "../Modal/BasicModal/BasicModal";
 
 import "./MenuLeft.scss";
@@ -32,7 +33,7 @@ const MenuLeft = ({ user, location }) => {
     switch (type) {
       case "artist":
         setTitleModal("Nuevo artista");
-        setContentModal(<h2>Formulario nuevo artista</h2>);
+        setContentModal(<AddArtistForm setShowModal={setShowModal} />);
         setShowModal(true);
         break;
       case "song":
@@ -65,7 +66,7 @@ const MenuLeft = ({ user, location }) => {
             onClick={handlerMenu}
           >
             <Icon name="home" /> Inicio
-        </Menu.Item>
+          </Menu.Item>
           <Menu.Item
             as={Link}
             to="/artists"
@@ -74,7 +75,7 @@ const MenuLeft = ({ user, location }) => {
             onClick={handlerMenu}
           >
             <Icon name="music" /> Artistas
-        </Menu.Item>
+          </Menu.Item>
         </div>
 
         {userAdmin ?
@@ -88,14 +89,16 @@ const MenuLeft = ({ user, location }) => {
             <Menu.Item name="tema" onClick={() => handlerModal('album')} >
               <Icon name="plus square outline" /> Nuevo Album
             </Menu.Item>
+
+
+            <BasicModal show={showModal} setShow={setShowModal} title={titleModal} >
+              {contentModal}
+            </BasicModal>
           </div>
           :
           ""
         }
       </Menu>
-      <BasicModal show={showModal} setShow={setShowModal} title={titleModal}>
-        <h2>{contentModal}</h2>
-      </BasicModal>
     </>
   );
 };

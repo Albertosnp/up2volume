@@ -1,0 +1,39 @@
+@import "../../../scss/index.scss";
+
+.ui.form.add-artist-form {
+    .artist-banner {
+        position: relative;
+        background-color: $background-grey;
+        height: 200px;
+
+        img {
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        .banner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+
+        }
+    }
+
+    .artist-avatar {
+        height: 120px;
+        width: 120px;
+        background-color: $background-grey;
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+    }
+}
