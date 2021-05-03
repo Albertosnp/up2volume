@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { map } from "lodash";
 import { BannerHome } from "../../components/BannerHome/BannerHome";
+import { BasicSliderItems } from "../../components/Sliders/BasicSliderItems/BasicSliderItems";
 import firebase from "../../utils/Firebase";
 import "firebase/firestore";
+
 
 import "./Home.scss";
 
@@ -16,7 +18,7 @@ export const Home = () => {
         .get()
         .then(response => {
             const arrayArtists = [];
-            response?.docs.map(artist => {
+            response?.docs?.map(artist => {
                 const data = artist.data();
                 data.id = artist.id;
                 arrayArtists.push(data);
@@ -35,6 +37,8 @@ export const Home = () => {
         <>
             <BannerHome />
             <div className="home">
+                <BasicSliderItems title="Últimos artistas" data={artists}  
+                    folderImage="artists/avatars" urlName="artist" />
                 <h2>Mas...</h2>
             </div>
         </>

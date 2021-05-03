@@ -67,7 +67,6 @@ export const AddArtistForm = ({ setShowModal }) => {
             preview: null
         });
     };
-
     const handlerSubmit = async () => {
         //Validacion de campos
         if (!formData.name) return toast.warning("Debes añadir el nombre del artista.");
@@ -83,13 +82,14 @@ export const AddArtistForm = ({ setShowModal }) => {
             await uploadArtist(uidImageBanner, uidImageAvatar); //Sube el artista
             resetForm(); //No es necesario
             toast.success("El artista se ha añadido correctamente.");
-            setShowModal(false);
             setIsLoading(false);
+            setShowModal(false);
         } catch (error) {
             toast.error("Ups... Algo salió mal.");
             setIsLoading(false);
-        } 
+        }
     };
+
     //TODO: añadir descripcion a los campos para el usuario -> banner y avatar 
     return (
         <Form className="add-artist-form" onSubmit={handlerSubmit} onChange={handlerChange}>

@@ -1,13 +1,14 @@
 @import "../../scss/index.scss";
 
 .top-bar {
-  height: 50px;
-  background-color: $background-grey-dark-light;
-
+  height: 60px;
+  // background-color: $background-grey-dark-light;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  position: relative;
+  z-index: 1;
 
   &__left {
     i {
@@ -27,9 +28,10 @@
     color: $font-grey;
 
     img {
-      width: 25px;
-      height: 25px;
+      width: 40px;
+      height: 40px;
       margin-right: 10px;
+      border-radius: 100%;
     }
 
     .ui.item.dropdown {

@@ -1,0 +1,63 @@
+@import "../../../scss/index.scss";
+
+.basic-slider-items {
+    margin: 50px 0 ;
+
+    > h2{
+        border-bottom: 1px solid $border-grey-light;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    &__list {
+        .slick-prev {
+            left: -35px
+        }
+        .slick-next {
+            right: -35px;
+        }
+
+        .slick-arrow::before{
+            font-size: 25px;
+            opacity: 0.5;
+        }
+        .slick-arrow:hover{
+            opacity: 0.75;
+        }
+        .artist{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            
+            > h4 {
+                color: $font-grey;
+                margin-top: 0px;
+                font-size: 16px;
+            }
+        }
+        &-item {
+            padding: 20px;
+            // .avatar {
+            //     height: 160px;
+            //     width: 100%;
+            //     background-repeat: no-repeat;
+            //     background-size: contain;
+            //     background-position: center;
+            //     border: solid;
+            // }
+
+            > h4 {
+                color: $font-grey;
+                margin-top: 10px;
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.ui.card, 
+.ui.cards {
+    box-shadow: none !important;
+    width: 160px !important;    
+}

@@ -3,9 +3,9 @@ import { UploadAvatar } from '../../components/Settings/UploadAvatar';
 import { UserName } from '../../components/Settings/UserName';
 import { BasicModal } from '../../components/Modal/BasicModal/BasicModal';
 import { UserEmail } from '../../components/Settings/UserEmail';
-
-import "./Settings.scss";
 import { UserPassword } from '../../components/Settings/UserPassword';
+import "./Settings.scss";
+
 
 
 export const Settings = ({ user, setReloadApp }) => {
