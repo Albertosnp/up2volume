@@ -22,10 +22,17 @@
             background-position: center;
             background-size: contain;
             margin: 0 auto;
+
+            // &:hover {
+            //     filter: opacity(0.5);
+            // }
         }
 
         h3 {
             color: $font-grey;
+            &:hover{
+                color: $font-light;
+            }
         }
     }
 }
