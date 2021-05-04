@@ -17,7 +17,7 @@ const TopBar = ({ user, history }) => {
   };
 
   const trigger = (
-    <span>
+    <span >
         <Image src={user.photoURL ? user.photoURL : UserImage} />
         {user.displayName}
     </span>
@@ -29,7 +29,7 @@ const TopBar = ({ user, history }) => {
         <Icon name="angle left" onClick={goBack} />
       </div>
       <div className="top-bar__right">
-        <Dropdown item trigger={trigger}>
+        <Dropdown item trigger={trigger} className="top-bar__right__account">
           <Dropdown.Menu>
             <Link to="/settings">
                 <Dropdown.Item >Cuenta</Dropdown.Item>

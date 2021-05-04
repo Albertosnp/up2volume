@@ -7,7 +7,6 @@ import { BasicModal } from "../Modal/BasicModal/BasicModal";
 
 import "./MenuLeft.scss";
 
-
 const MenuLeft = ({ user, location }) => {
   const [activeMenu, setActiveMenu] = useState(location.pathname);
   const [userAdmin, setUserAdmin] = useState(false);
