@@ -5,7 +5,7 @@ import NoImage from "../../../assets/png/no-image.png";
 
 import "./AddArtistForm.scss";
 
-export const Dropzone = ({ file, setFile, classNameField, classNameDiv, setWholeFile }) => {
+export const Dropzone = ({ file, setUrl, classNameField, classNameDiv, setWholeFile }) => {
     const {
         getRootProps,
         getInputProps,
@@ -18,7 +18,7 @@ export const Dropzone = ({ file, setFile, classNameField, classNameDiv, setWhole
             const isGoodSize = (1000000 > fileUploated.size)
             if (!isGoodSize) return toast.warning("La imagen no puede exceder de 1Mb");
             setWholeFile(fileUploated) 
-            setFile({
+            setUrl({
                 ...file,
                 content: URL.createObjectURL(fileUploated)
             })

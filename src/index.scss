@@ -72,4 +72,37 @@ code {
       color: $font-light;
     }
   }
+
+  .ui.dropdown {
+    background-color: $background-grey;
+    color: $font-light;
+    border: 0;
+
+    .search {
+      color: $font-light;
+    }
+
+    .icon{
+      color: $font-light;
+      font-size: 14px;
+    }
+
+    .menu {
+      background-color: $background-grey-dark;
+      border: 0;
+
+      .item{
+        border: none;
+        color: $font-light;
+      }
+      .item:hover{
+        background-color: $background-grey;
+      }
+
+      .message {
+        color: $font-light;
+      }
+    }
+
+  }
 }

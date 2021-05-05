@@ -30,7 +30,6 @@ export const AddArtistForm = ({ setShowModal }) => {
         preview: null
     })
 
-
     const styleBanner = { backgroundImage: `url('${urlBanner}')` }
     const styleAvatar = {
         backgroundImage: `url('${urlBanner ? urlBanner : NoImage}')`
@@ -94,10 +93,10 @@ export const AddArtistForm = ({ setShowModal }) => {
     return (
         <Form className="add-artist-form" onSubmit={handlerSubmit} onChange={handlerChange}>
             <Dropzone classNameField={"artist-banner"} classNameDiv={"banner"} 
-                file={urlBanner} setFile={setUrlBanner} 
+                file={urlBanner} setUrl={setUrlBanner} 
                 styleMod={styleBanner}  setWholeFile={setFileBanner} />
             <Dropzone classNameField={"artist-avatar"} classNameDiv={"avatar"} 
-                file={urlAvatar} setFile={setUrlAvatar} 
+                file={urlAvatar} setUrl={setUrlAvatar} 
                 styleMod={styleAvatar} setWholeFile={setFileAvatar} />
             <Form.Field>
                 <Input placeholder="Nombre del artista" name="name" />

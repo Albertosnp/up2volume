@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Icon, Menu } from "semantic-ui-react";
 import { isUserAdmin } from "../../utils/Api";
+import { AddAlbumForm } from "../Albums/AddAlbumForm/AddAlbumForm";
 import { AddArtistForm } from "../Artists/AddArtistForm/AddArtistForm";
 import { BasicModal } from "../Modal/BasicModal/BasicModal";
 
@@ -42,7 +43,7 @@ const MenuLeft = ({ user, location }) => {
         break;
       case "album":
         setTitleModal("Nuevo album");
-        setContentModal(<h2>Formulario nuevo album</h2>);
+        setContentModal(<AddAlbumForm setShowModal={setShowModal} />);
         setShowModal(true);
         break;
       default:
