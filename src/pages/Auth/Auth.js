@@ -3,7 +3,7 @@ import AuthOptions from "../../components/Auth/AuthOptions/AuthOptions";
 import RegisterForm from "../../components/Auth/RegisterForm";
 import LoginForm from "../../components/Auth/LoginForm";
 import BackGroundAuth from "../../assets/jpg/background-auth.jpg"
-import LogoNameWhite from "../../assets/png/logo-name-white.png"
+//import LogoNameWhite from "../../assets/png/logo-name-white.png"
 
 import "./Auth.scss";
 

@@ -12,7 +12,7 @@ import "./AddAlbumForm.scss";
 
 const bbdd = firebase.firestore(firebase);
 
-const formInitialValue = {
+const FORM_INITIAL_VALUE = {
     name: '',
     artist: ''
 }
@@ -20,7 +20,7 @@ const formInitialValue = {
 export const AddAlbumForm = ({ setShowModal }) => {
     const [imgAlbum, setImgAlbum] = useState(null);
     const [artists, setArtists] = useState([]);
-    const [formData, setFormData] = useState(formInitialValue);
+    const [formData, setFormData] = useState(FORM_INITIAL_VALUE);
     const [isLoading, setIsLoading] = useState(false);
     const [file, setFile] = useState(null);
 
@@ -86,8 +86,17 @@ export const AddAlbumForm = ({ setShowModal }) => {
                         .child(`albums/${fileName}`);
         return ref.put(file); // Sube el fichero a la ruta especificada               
     };
+    //Sube el album completo a la coleccion de albums
+    const uploadAlbum = (fileName) => {
+        bbdd.collection("albums")
+            .add({
+                name: formData.name,
+                artist: formData.artist,
+                avatar: fileName
+            })
+    };
 
-    const handlerSubmit = () => {
+    const handlerSubmit = async () => {
         //Validacion de campos
         if (!formData.name) return toast.warning("Debes añadir el nombre del album.");
         if (!formData.artist) return toast.warning("Debes seleccionar un artista.");
@@ -95,18 +104,29 @@ export const AddAlbumForm = ({ setShowModal }) => {
         
         setIsLoading(true);
         const fileName = uuidv4()//crea un id unico que será el nombre de la imagen del album
-        uploadImage(fileName)
-            .then(() => {
-                console.log("bien");
-            })
-            .catch(() => {
-                toast.warning("No se pudo subir la imagen del album.")
-                setIsLoading(false);
-            })
-        
+        try {
+            await uploadImage(fileName);
+        } catch {
+            toast.warning("No se pudo subir la imagen del album.");
+            setIsLoading(false);
+        }
+        try {
+            await uploadAlbum(fileName);
+            toast.success("El album se ha creado con éxito.")
+            resetForm();
+        } catch {
+            toast.warning("No se pudo subir el album.");
+            setIsLoading(false);
+        }
+        setIsLoading(false);
         setShowModal(false);
     };
 
+    const resetForm = () => {
+        setFile(null)
+        setFormData(FORM_INITIAL_VALUE);
+        setImgAlbum(null);
+    };
     return (
         <Form className="add-album-form" onSubmit={handlerSubmit} onChange={handlerChange}>
             <Form.Group>

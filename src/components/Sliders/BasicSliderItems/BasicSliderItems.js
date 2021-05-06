@@ -7,9 +7,9 @@ import "./BasicSliderItems.scss";
 import { Card } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-
+//Componente Slider que muestra albums. artistas, canciones...
 export const BasicSliderItems = ({ title, data, folderImage, urlName }) => {
-
+    //ajustes del slider -> semantic-ui
     const settings = {
         className: "basic-slider-items__list",
         infinite: true,
@@ -17,6 +17,9 @@ export const BasicSliderItems = ({ title, data, folderImage, urlName }) => {
         slidesToShow: 5,
         swipeToSlide: true,
     }
+    //Si el array no tiene suficientes elementos no se muestra
+    if(data.length < 5) return null; 
+
     return (
         <div className="basic-slider-items">
         <h2>{title}</h2>

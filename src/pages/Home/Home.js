@@ -12,7 +12,22 @@ const bbdd = firebase.firestore(firebase);
 
 export const Home = () => {
     const [artists, setArtists] = useState([]);
-    
+    const [albums, setAlbums] = useState([]);
+
+    useEffect(() => {
+        bbdd.collection("albums")
+            .get()
+            .then(albums => {
+                const arrayAlbums = [];
+                albums?.docs?.map( album => {
+                    const data = album.data();
+                    data.id = album.id;
+                    arrayAlbums.push(data);
+                })
+                setAlbums(arrayAlbums);
+            })
+    }, [])
+
     useEffect(() => {
         bbdd.collection("artists")
         .get()
@@ -37,8 +52,16 @@ export const Home = () => {
         <>
             <BannerHome />
             <div className="home">
-                <BasicSliderItems title="Últimos artistas" data={artists}  
-                    folderImage="artists/avatars" urlName="artist" />
+                <BasicSliderItems 
+                    title="Últimos artistas" 
+                    data={artists}  
+                    folderImage="artists/avatars" 
+                    urlName="artist" />
+                <BasicSliderItems 
+                    title="Últimos álbumes" 
+                    data={albums}  
+                    folderImage="albums" 
+                    urlName="album" />
                 <h2>Mas...</h2>
             </div>
         </>
