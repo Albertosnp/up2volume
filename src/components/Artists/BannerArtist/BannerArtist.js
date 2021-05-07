@@ -12,6 +12,7 @@ export const BannerArtist = ({ artist }) => {
     const style = {
         backgroundImage: `url('${bannerUrl}')`
     }
+    //Saca la imagen de banner del artista con el id pasado
     useEffect(() => {
         firebase
             .storage()
@@ -21,7 +22,6 @@ export const BannerArtist = ({ artist }) => {
                 setBannerUrl(url)
             })
     }, [artist])
-
 
     return (
         <div className="banner-artist" style={style}>

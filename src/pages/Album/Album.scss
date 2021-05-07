@@ -1,0 +1,9 @@
+@import "../../scss/index.scss";
+
+.album {
+    margin: 50px;
+
+   &__songs {
+       margin-top: 40px;
+   }
+}

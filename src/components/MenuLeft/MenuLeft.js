@@ -74,7 +74,16 @@ const MenuLeft = ({ user, location }) => {
             active={activeMenu === "/artists"}
             onClick={handlerMenu}
           >
-            <Icon name="music" /> Artistas
+            <Icon name="user" /> Artistas
+          </Menu.Item>
+          <Menu.Item
+            as={Link}
+            to="/albums"
+            name="albums"
+            active={activeMenu === "/albums"}
+            onClick={handlerMenu}
+          >
+            <Icon name="dot circle" /> Álbums
           </Menu.Item>
         </div>
 
@@ -87,7 +96,7 @@ const MenuLeft = ({ user, location }) => {
               <Icon name="plus square outline" /> Nuevo Tema
             </Menu.Item>
             <Menu.Item name="tema" onClick={() => handlerModal('album')} >
-              <Icon name="plus square outline" /> Nuevo Album
+              <Icon name="plus square outline" /> Nuevo Álbum
             </Menu.Item>
 
 

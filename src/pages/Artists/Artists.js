@@ -22,6 +22,7 @@ export const Artists = () => {
                 });
                 setArtists(arrayArtists);
             })
+            
     }, [])
 
     return (

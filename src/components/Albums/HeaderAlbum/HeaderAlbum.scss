@@ -1,0 +1,27 @@
+@import "../../../scss/index.scss";
+
+.album__header {
+    display: flex;
+
+    .image {
+        width: 200px;
+        height: 200px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .info {
+        margin-left: 20px;
+
+        h1 {
+            font-size: 40px;
+        }
+        p {
+            span {
+                color: $font-light;
+            }
+        }
+    }
+
+}

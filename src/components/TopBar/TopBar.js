@@ -13,7 +13,6 @@ const TopBar = ({ user, history }) => {
   };
 
   const goBack = () => {
-    console.log(history.goBack());
     history.goBack();
   };
 
