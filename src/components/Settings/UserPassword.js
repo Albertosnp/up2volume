@@ -68,7 +68,6 @@ const ChangePasswordForm = ({ setShowModal }) => {
         const currentPassword = formData.currentPassword.trim();
         const newPass1 = formData.newPass1.trim();
         const newPass2 = formData.newPass2.trim();
-        console.log(firebase.auth().currentUser.getIdToken);
         const isOkPass = checkPasswords(currentPassword, newPass1, newPass2);
         //Pasa todas las validaciones
         if (isOkPass) {

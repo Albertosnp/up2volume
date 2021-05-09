@@ -24,8 +24,7 @@ export const Albums = () => {
                 })
                 setAlbumes(arrayAlbums);
             })
-            .catch(err => {
-                console.log(err);
+            .catch(() => {
                 toast.warning("No se pudieron cargar los Álbumes.");
             })
             
