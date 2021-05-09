@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes } from '../../routes/Routes';
 import MenuLeft from '../../components/MenuLeft/MenuLeft';
 import TopBar from '../../components/TopBar/TopBar';
+import { Player } from '../../components/Player/Player';
 
 import "./LoggedLayout.scss";
 
@@ -24,7 +25,7 @@ export const LoggedLayout = ({ user, setReloadApp }) => {
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={16}>
-                        <h2>Reproductor</h2>
+                        <Player />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

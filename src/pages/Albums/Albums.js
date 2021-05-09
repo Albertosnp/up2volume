@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Loader } from 'semantic-ui-react';
 import firebase from '../../utils/Firebase';
 import "firebase/firestore";
 
@@ -11,7 +11,7 @@ const bbdd = firebase.firestore(firebase);
 
 export const Albums = () => {
     const [albumes, setAlbumes] = useState([]);
-    
+
     useEffect(() => {
         bbdd.collection("albums")
             .get()
@@ -30,6 +30,10 @@ export const Albums = () => {
             
     }, [])
 
+    //Para mostrar mensaje de loading al usuario
+    const isLoading = (!albumes)
+    if (isLoading) return <Loader active >Cargando</Loader>
+
     return (
         <div className="albums">
             <h1>Álbumes</h1>
@@ -45,8 +49,9 @@ export const Albums = () => {
     )
 }
 
-const Album = ({ album }) => {
+const Album = ({ album, setImages }) => {
     const [avatarUrl, setAvatarUrl] = useState(null);
+
     const style = {
             backgroundImage: `url('${avatarUrl}')`
     }
@@ -55,11 +60,13 @@ const Album = ({ album }) => {
         firebase.storage()
         .ref(`albums/${album.avatar}`)
         .getDownloadURL()
-        .then(avatarAlbum => setAvatarUrl(avatarAlbum))
+        .then(avatarAlbum => {
+            setAvatarUrl(avatarAlbum);
+        })
         .catch(() => toast.warning("No se pudo cargar la imagen del Álbum.")) 
     }, [])
     
-    
+
     return (
         <Link to={`/album/${album.id}`} >
             <div className="albums__item">

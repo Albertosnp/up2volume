@@ -4,6 +4,7 @@ import firebase from '../../utils/Firebase';
 import "firebase/firestore";
 import { BannerArtist } from '../../components/Artists/BannerArtist/BannerArtist';
 import { AvatarArtist } from '../../components/Artists/AvatarArtist/AvatarArtist';
+import { BasicSliderItems } from '../../components/Sliders/BasicSliderItems/BasicSliderItems'; 
 import "./Artist.scss";
 import { toast } from 'react-toastify';
 
@@ -48,7 +49,15 @@ const Artist = ({ match }) => {
         <div className="artist">
             {artist && <BannerArtist artist={artist} />}
             {artist && <AvatarArtist artist={artist} />}
-            <h2>Más informacion</h2>
+            <div className="artist__content">
+                <BasicSliderItems 
+                    title="Álbumes"
+                    data={albums}
+                    folderImage="albums"
+                    urlName="album"
+                />
+            </div>
+            
         </div>
     )
 }
