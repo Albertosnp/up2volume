@@ -54,7 +54,7 @@ export const AddArtistForm = ({ setShowModal }) => {
             avatar: uidImageAvatar
         })
     }
-
+    //resetea valores del formulario
     const resetForm = () => {
         setFormData(initialForm);
         setUrlBanner({
@@ -66,6 +66,7 @@ export const AddArtistForm = ({ setShowModal }) => {
             preview: null
         });
     };
+    
     const handlerSubmit = async () => {
         //Validacion de campos
         if (!formData.name) return toast.warning("Debes añadir el nombre del artista.");

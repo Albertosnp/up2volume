@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPlayer from "react-player";
 import { Grid, Icon, Image, Input, Progress } from 'semantic-ui-react';
 
 import "./Player.scss";
 
 export const Player = ({ songData }) => {
-    const [playerSeconds, setPlayerSeconds] = useState(200);
-    const [totalSeconds, setTotalSeconds] = useState(500);
+    const [playedSeconds, setPlayedSeconds] = useState(0);
+    const [totalSeconds, setTotalSeconds] = useState(0);
     const [playing, setPlaying] = useState(false)
     const [volume, setVolume] = useState(0.3)
+    
+    useEffect(() => {
+        if (!songData?.url) return;
+        onStart()
+
+    }, [songData])
 
     const onStart = () => {
         setPlaying(true)
@@ -19,7 +25,13 @@ export const Player = ({ songData }) => {
     };
 
     const handlerVolume = (event, data) => {
-        setVolume(data.value)
+        //Siempre debe ser de tipo number
+        setVolume(Number(data.value))
+    };
+
+    const onProgress = (data) => {
+        setPlayedSeconds(data.playedSeconds)
+        setTotalSeconds(data.loaderSeconds)
     };
 
     return (
@@ -39,7 +51,7 @@ export const Player = ({ songData }) => {
                     </div>
                     <Progress 
                         progress="value"
-                        value={playerSeconds}
+                        value={playedSeconds}
                         total={totalSeconds}  
                         size="tiny"
 
@@ -57,6 +69,15 @@ export const Player = ({ songData }) => {
                         value={volume}
                     />
                 </Grid.Column>
+                <ReactPlayer 
+                    className="react-player"
+                    url={songData?.url}
+                    playing={playing}
+                    height="0"
+                    width="0"
+                    volume={volume}
+                    onProgress={onProgress}
+                />
             </Grid>           
         </div>
     )

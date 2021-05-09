@@ -5,6 +5,7 @@ import { isUserAdmin } from "../../utils/Api";
 import { AddAlbumForm } from "../Albums/AddAlbumForm/AddAlbumForm";
 import { AddArtistForm } from "../Artists/AddArtistForm/AddArtistForm";
 import { BasicModal } from "../Modal/BasicModal/BasicModal";
+import { AddSongForm } from "../Songs/AddSongForm/AddSongForm";
 
 import "./MenuLeft.scss";
 
@@ -19,11 +20,13 @@ const MenuLeft = ({ user, location }) => {
     setActiveMenu(location.pathname);
   }, [location]);
 
+  //Verifica si es administrador
   useEffect(() => {
     isUserAdmin(user.uid)
       .then(response => setUserAdmin(response))
   }, [user]);
 
+  //Para mostrar indicador "barra lateral de donde estamos"
   const handlerMenu = (event, menu) => {
     //CAmbia el estado por la propiedad de Menu.Item (to) que es la direccion donde estamos
     setActiveMenu(menu.to);
@@ -38,7 +41,7 @@ const MenuLeft = ({ user, location }) => {
         break;
       case "song":
         setTitleModal("Nuevo tema");
-        setContentModal(<h2>Formulario nuevo tema</h2>);
+        setContentModal(<AddSongForm setShowModal={setShowModal} />);
         setShowModal(true);
         break;
       case "album":

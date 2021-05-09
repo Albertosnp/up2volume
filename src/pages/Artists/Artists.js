@@ -6,6 +6,7 @@ import { Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 import "./Artists.scss";
+import { toast } from 'react-toastify';
 const bbdd = firebase.firestore(firebase);
 
 export const Artists = () => {
@@ -22,7 +23,7 @@ export const Artists = () => {
                 });
                 setArtists(arrayArtists);
             })
-            
+            .catch(() => toast.warning("No se pudieron cargar los Artistas."))            
     }, [])
 
     return (
