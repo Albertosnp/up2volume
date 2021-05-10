@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Button, Dropdown, Form, Icon, Input } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 import { useDropzone } from 'react-dropzone';
+import { v4 as uuidv4 } from 'uuid';
 import firebase from '../../../utils/Firebase';
 import "firebase/firestore";
+import "firebase/storage";
 
 import "./AddSongForm.scss";
-import { set } from 'lodash-es';
 
 const bbdd = firebase.firestore(firebase);
 
@@ -70,13 +71,51 @@ export const AddSongForm = ({ setShowModal }) => {
         }
     })
 
-    const handlerSubmit = () => {
+    //Sube a la bbdd el fichero y devuelve una promesa
+    const uploadFile = (idFile) => {
+        const ref = firebase.storage()
+                            .ref()
+                            .child(`songs/${idFile}`);
+        
+        return ref.put(file);                    
+    };
+    //Sube a la bbdd la informacion del tema
+    const uploadDataSong = (idFile) => {
+        bbdd.collection("songs")
+            .add({
+                name: formData.name,
+                album: formData.album,
+                fileName: idFile,
+                artist: artist.id
+            })
+    };
+
+    const handlerSubmit = async () => {
         //Validacion de campos
         if (!formData.name) return toast.warning("Debes añadir el nombre del tema.");
         if (!formData.artist) return toast.warning("Debes asignar el tema a un artista existente.");
         if (!file) return toast.warning("Debes añadir un archivo .mp3");
 
         setIsLoading(true);
+        const idFileSong = uuidv4(); //para id unico
+        //Sube el fichero
+        try {
+            await uploadFile(idFileSong);
+        } catch {
+            toast.warning("Hubo un error al subir el fichero.");
+            setIsLoading(false);
+        }
+        //Sube la info del tema
+        try {
+            await uploadDataSong(idFileSong);
+            toast.success("El tema se ha subido correctamente.");
+            setIsLoading(false);
+            setShowModal(false);
+            setFormData(INITIAL_FORM);
+        } catch {
+            toast.warning("Hubo un error al guardar el tema.");
+            setIsLoading(false);
+        }
     };
 
     //Cambia el estado "artist" al seleccionarlo en el formulario
@@ -104,7 +143,7 @@ export const AddSongForm = ({ setShowModal }) => {
             album: data.value
         })
     };
-    //Actualiza el nombre del tema segun teclea el ususario
+    //Actualiza el nombre del tema segun teclea el usuario
     const handlerChangeName = (event) => {
         setFormData({
             ...formData,
@@ -113,9 +152,10 @@ export const AddSongForm = ({ setShowModal }) => {
     };
 
     return (
-        <Form className="add-song-form" onSubmit={handlerSubmit} onChange={handlerChangeName} >
+        <Form className="add-song-form" onSubmit={handlerSubmit} >
             <Form.Field>
                 <Input 
+                    onChange={handlerChangeName}
                     placeholder="Nombre del tema"
                 />
             </Form.Field>

@@ -7,15 +7,36 @@ import "firebase/firestore";
 
 
 import "./Home.scss";
+import { SongsSlider } from "../../components/Sliders/SongsSlider/SongsSlider";
 
 const bbdd = firebase.firestore(firebase);
 
 export const Home = () => {
     const [artists, setArtists] = useState([]);
     const [albums, setAlbums] = useState([]);
+    const [songs, setSongs] = useState([]);
 
+    //obtiene las ultimas 10 canciones añadidas
+    useEffect(() => {
+        bbdd.collection("songs")
+            .limit(10)
+            .get()
+            .then(songs => {
+                const arraySongs = [];
+                songs?.docs?.map(song => {
+                    arraySongs.push({
+                        ...song.data(),
+                        id: song.id
+                    })
+                })
+                setSongs(arraySongs);
+            })
+    }, [])
+
+    //obtiene los 10 ultimos albumes
     useEffect(() => {
         bbdd.collection("albums")
+            .limit(10)
             .get()
             .then(albums => {
                 const arrayAlbums = [];
@@ -28,8 +49,10 @@ export const Home = () => {
             })
     }, [])
 
+    //Obtiene los ultimos 10 artistas
     useEffect(() => {
         bbdd.collection("artists")
+        .limit(10)
         .get()
         .then(response => {
             const arrayArtists = [];
@@ -63,7 +86,10 @@ export const Home = () => {
                     data={albums}  
                     folderImage="albums" 
                     urlName="album" />
-                <h2>Mas...</h2>
+                <SongsSlider 
+                    title="Últimas temas añadidos"
+                    data={songs}
+                />    
             </div>
         </>
     );

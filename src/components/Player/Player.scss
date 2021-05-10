@@ -71,13 +71,82 @@
                 color: $font-grey;
                 margin-right: 15px;
             }
-            input {
+            
+            input[type='range'] {
+                display: block;
                 width: 120px;
-                padding-left: 0;
+                background-color: transparent;
                 padding-right: 0;
-                
+                padding-left: 0;
+                padding-top: 17px;
+            }
+
+            
+            input[type='range']:focus, 
+            input[type='range']:active,
+            input[type='range']
+            {
+                outline: none;
+                border-style: none;
             }
             
+            input[type='range'],
+            input[type='range']::-webkit-slider-runnable-track,
+            input[type='range']::-webkit-slider-thumb {
+                -webkit-appearance: none;
+            }
+            //Bola
+            input[type=range]::-webkit-slider-thumb {
+                background-color: $font-light;
+                width: 14px;
+                height: 14px;
+                // border: 3px solid #333;
+                border-radius: 50%;
+                margin-top: -7px
+            }
+            
+            input[type=range]::-moz-range-thumb {
+                background-color: #333;
+                width: 15px;
+                height: 15px;
+                // border: 3px solid #333;
+                border-radius: 50%;
+            }
+            
+            input[type=range]::-ms-thumb {
+                background-color: #777;
+                width: 20px;
+                height: 20px;
+                // border: 2px solid #333;
+                border-radius: 50%;
+            }
+            
+            input[type=range]::-webkit-slider-runnable-track {
+                background-color: $font-grey;
+                height: 2px;
+            }
+            
+            input[type=range]:focus::-webkit-slider-runnable-track {
+                outline: none;
+            }
+            
+            input[type=range]::-moz-range-track {
+                background-color: #777;
+                height: 3px;
+            }
+            
+            input[type=range]::-ms-track {
+                background-color: #777;
+                height: 3px;
+            }
+            
+            input[type=range]::-ms-fill-lower {
+                background-color: HotPink
+            }
+            
+            input[type=range]::-ms-fill-upper {
+                background-color: black;
+            }
         } 
     }
 }

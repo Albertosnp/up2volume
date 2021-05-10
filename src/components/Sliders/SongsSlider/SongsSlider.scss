@@ -1,6 +1,6 @@
 @import "../../../scss/index.scss";
 
-.basic-slider-items {
+.songs-slider {
     margin: 50px 0 ;
 
     > h2{
@@ -24,7 +24,9 @@
         .slick-arrow:hover{
             opacity: 0.75;
         }
+
         .object__card{
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -35,7 +37,7 @@
             padding: 8% 0;
             margin: 3% 6%;
 
-            transition: all 0.3s ease;  
+            transition: all 0.3s ease; 
             
             img {
                 -webkit-box-shadow: 0px 0px 27px -4px rgba(0,0,0,0.62);
@@ -49,49 +51,44 @@
                 font-size: 16px;
             }
 
+            i {
+                position: absolute;
+                width: 100%;
+                top: 56%;
+                left: 27%;
+                opacity: 0;
+                font-size: 50px;
+                color: $font-light;
+                transition: all 0.3s ease-in-out;
+
+                &:hover{
+                    color: $color-master;
+                }
+            }
 
             &:hover{
+                cursor: pointer;
                 background-color: $background-grey-dark;
                 h4{
                    color: $font-light !important; 
                 }
+                i {
+                    top: 54% ;
+                    opacity: 1;
+                }
                 
             }
         }
-        // &-item {
+        // &-song {
         //     padding: 20px;
+
         //     .avatar {
         //         height: 160px;
         //         width: 100%;
         //         background-repeat: no-repeat;
-        //         background-size: contain;
-        //         background-position: center;
-        //         border: solid;
-        //     }
-            
-        //     > h4 {
-        //         color: $font-grey;
-        //         margin-top: 10px;
-        //         font-size: 16px;
+        //         background-size: cover;
+
         //     }
         // }
     }
-}
-.slick-list{
-    background-color: transparent;
-    
-}
-// .slick-slide {
-//     background-color: transparent;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     align-content: center;
-// }
-
-.ui.card, 
-.ui.cards {
-    box-shadow: none !important;
-    width: 80% !important;
-    background: none !important;
 }
