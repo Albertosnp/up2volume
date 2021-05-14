@@ -19,7 +19,8 @@ function createWindow() {
     //skipTaskbar: true,
     webPreferences: {
       devTools: false
-    }
+    },
+    icon: __dirname + '../public/icons/icono.icns'
     
   });
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
