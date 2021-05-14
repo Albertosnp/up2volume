@@ -9,7 +9,8 @@ export const Player = ({ songData }) => {
     const [totalSeconds, setTotalSeconds] = useState(0);
     const [playing, setPlaying] = useState(false)
     const [volume, setVolume] = useState(0.3)
-    
+    const [duration, setDuration] = useState(0)
+
     useEffect(() => {
         if (!songData?.url) return;
         onStart()
@@ -30,8 +31,12 @@ export const Player = ({ songData }) => {
     };
 
     const onProgress = (data) => {
-        setPlayedSeconds(data.playedSeconds)
-        setTotalSeconds(data.loaderSeconds)
+        setPlayedSeconds(data.playedSeconds.toFixed(0))
+        setTotalSeconds(data.loadedSeconds)
+    };
+    const onDuration = (data) => {
+        const duration = data / 60
+        setDuration(duration.toFixed(2))
     };
 
     return (
@@ -54,8 +59,9 @@ export const Player = ({ songData }) => {
                         value={playedSeconds}
                         total={totalSeconds}  
                         size="tiny"
-
+                        
                     />
+                    total:{duration} value: {playedSeconds}
                 </Grid.Column>
                 <Grid.Column width={4} className="right">
                     <Input 
@@ -77,6 +83,7 @@ export const Player = ({ songData }) => {
                     width="0"
                     volume={volume}
                     onProgress={onProgress}
+                    onDuration={onDuration}
                 />
             </Grid>           
         </div>

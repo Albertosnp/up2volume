@@ -72,6 +72,13 @@
     ],
     "directories": {
       "buildResources": "assets"
-    }
+    },
+    "extraFiles": [
+      {
+          "from": "src/assets/",
+          "to": "src/assets/",
+          "filter": ["**/*"]
+      }
+    ]
   }
 }

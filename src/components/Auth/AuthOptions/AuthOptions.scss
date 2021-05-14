@@ -21,6 +21,10 @@
         padding: 20px 0;
         font-size: 17px;
         letter-spacing: 3px;
+
+        &:hover {
+            background-color: $primary-blue-hover;
+        }
     }
 
     .ui.button.register {
