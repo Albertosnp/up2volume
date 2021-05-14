@@ -8,11 +8,11 @@ import { Home } from '../pages/Home/Home'
 import { Settings } from '../pages/Settings/Settings'
 
 
-export const Routes = ({ user, setReloadApp }) => {
+export const Routes = ({ user, setReloadApp, playerSong }) => {
     return (
         <Switch>
             <Route path="/" exact >
-                <Home />
+                <Home playerSong={playerSong} />
             </Route>
             <Route path="/artists" exact >
                 <Artists />
@@ -24,10 +24,10 @@ export const Routes = ({ user, setReloadApp }) => {
                 <Settings user={user} setReloadApp={setReloadApp}/>
             </Route>
             <Route path="/album/:id" exact >
-                <Album />
+                <Album playerSong={playerSong} />
             </Route>
             <Route path="/artist/:id" exact >
-                <Artist />
+                <Artist playerSong={playerSong}/>
             </Route>
         </Switch>
     )

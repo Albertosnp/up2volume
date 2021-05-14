@@ -7,14 +7,34 @@ import "firebase/firestore";
 import "./Album.scss";
 import { Loader } from 'semantic-ui-react';
 import { HeaderAlbum } from '../../components/Albums/HeaderAlbum/HeaderAlbum';
+import { ListSongs } from '../../components/Songs/ListSongs/ListSongs';
 
 const bbdd = firebase.firestore(firebase);
 
-const Album = ({ match }) => {
+const Album = ({ match, playerSong }) => {
     const [album, setAlbum] = useState(null);
     const [urlAvatar, setUrlAvatar] = useState(null)
     const [artist, setArtist] = useState(null);
-    
+    const [songs, setSongs] = useState([])
+
+    useEffect(() => {
+        if (album){
+            bbdd.collection("songs")
+            .where("album", "==", album.id )
+            .get()
+            .then(songs => {
+                const arraySongs = [];
+                songs?.docs?.map(song => {
+                    arraySongs.push({
+                        ...song.data(),
+                        id: song.id
+                    })
+                })
+                setSongs(arraySongs);
+            })
+        }
+        
+    }, [album])
 
     //Obtiene el album con el id pasado 
     useEffect(() => {
@@ -66,7 +86,7 @@ const Album = ({ match }) => {
         <div className="album">
             <HeaderAlbum artist={artist} album={album} urlAvatar={urlAvatar} />
             <div className="album__songs">
-                <p>Lista de canciones...</p>
+                <ListSongs songs={songs} urlAvatar={urlAvatar} playerSong={playerSong} />
             </div>
         </div>
     )

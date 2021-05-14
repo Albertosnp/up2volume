@@ -7,7 +7,7 @@ const AuthOptions = ({ setSelectedForm }) => {
 
     return (
         <div className="auth-options">
-            <h2>Millones de canciones gratis en up2volume</h2>
+            <h2>La comunidad de música libre</h2>
             <Button primary className="register" onClick={ () => setSelectedForm("register") }>
                 Registrarse gratis
             </Button>

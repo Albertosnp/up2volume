@@ -45,8 +45,9 @@ code {
         
         &:hover,
         &:active,
-        &:focus {
-          background-color: $background-grey-light-hover;
+        &:focus
+        &::after {
+          background-color: $background-grey-light-hover !important;
           border: 0;
           color: $font-light;
         }
@@ -56,6 +57,15 @@ code {
 
       .eye {
         color: $font-light;
+      }
+      .field {
+        .input{
+          -webkit-autofill {
+            border: none !important;
+            box-shadow: none !important;
+            border-color: none !important;
+        }
+      }
       }
     }
   }
@@ -68,7 +78,7 @@ code {
     font-size: 16px;
 
     &:hover {
-      background-color: $primary-blue;
+      background-color: $primary-blue-hover;
       color: $font-light;
     }
   }

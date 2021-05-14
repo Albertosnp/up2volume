@@ -11,7 +11,9 @@ import "./SongsSlider.scss";
 
 const bbdd = firebase.firestore(firebase);
 
-export const SongsSlider = ({ title, data }) => {
+export const SongsSlider = ({ title, data, playerSong }) => {
+    const [stateData, setstateData] = useState(data)
+    
     //ajustes del slider -> semantic-ui
     const settings = {
         className: "songs-slider__list",
@@ -45,24 +47,24 @@ export const SongsSlider = ({ title, data }) => {
             }
         ]
     }
-
-    if (data.lenght < 5) return null;
-
+    
+    //if (data.lenght < 5) return null;
+    console.log(data);
     return (
         <div className="songs-slider">
             <h2>{title}</h2>
             <Slider {...settings}>
                 {data.map(song => (
-                    <Song key={song.id} item={song} />
+                    <Song key={song.id} item={song} playerSong={playerSong}/>
                 ))}
             </Slider>
         </div>
     )
 }
 
-const Song = ({ item }) => {
+const Song = ({ item, playerSong }) => {
     const [avatar, setAvatar] = useState(null);
-    const [songInfo, setSongInfo] = useState(null);
+    const [elementInfo, setElementInfo] = useState(null);
 
     //Trae la imagen correspondiente
     const getImage = (url) => {
@@ -83,18 +85,19 @@ const Song = ({ item }) => {
                 .doc(item.artist)
                 .get()
                 .then(artist => {
-                    setSongInfo({
+                    setElementInfo({
                         ...artist.data(),
                         id: artist.id
                     })
-                    getImage(`artists/${artist.data().avatar}`);
+                    getImage(`artists/avatars/${artist.data().avatar}`);
                 })
+                .catch()
         } else {
             bbdd.collection("albums")
                 .doc(item.album)
                 .get()
                 .then(album => {
-                    setSongInfo({
+                    setElementInfo({
                         ...album.data(),
                         id: album.id
                     })
@@ -103,36 +106,35 @@ const Song = ({ item }) => {
         }
     }, [item])
 
-    // const style = {
-    //     backgroundImage: `url('${avatar}')`
-    // }
+    //Ejecuta el tema
+    const onPlay = () => {
+        playerSong(avatar, item.name, item.fileName);
+    };
 
     return (
         <div className="songs-slider__list-song">
             <div className="avatar" >
                 {!item.album ?
-                (<Link to={`/artist/${songInfo?.id}`} >
-                    <div className="object__card">
-                        <Card className="basic-slider-items__list-item"
-                            image={avatar} />
-                        <Icon name="play circle outline" />
+                <div className="object__card">
+                    <Card className="basic-slider-items__list-item"
+                        image={avatar} />
+                    <Icon name="play circle outline" onClick={onPlay}/>
+                    <Link to={`/artist/${elementInfo?.id}`} >
                         <h4>{item.name}</h4>
-                    </div>
-                </Link>)
+                    </Link>
+                </div>
                 :
-                <Link to={`/album/${songInfo?.id}`} >
-                    <div className="object__card">
-                        <Card className="basic-slider-items__list-item"
-                            image={avatar}
-                            />
-                        <Icon name="play circle" />
+                <div className="object__card">
+                    <Card className="basic-slider-items__list-item"
+                        image={avatar}
+                        />
+                    <Icon name="play circle" onClick={onPlay} />
+                    <Link to={`/album/${elementInfo?.id}`} >
                         <h4>{item.name}</h4>
-                    </div>
-                </Link>
+                    </Link>
+                </div>
             }
             </div>
-            
-
         </div>
     )
 };

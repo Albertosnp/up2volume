@@ -36,7 +36,7 @@
             border-radius: 5px;
             padding: 8% 0;
             margin: 3% 6%;
-
+            position: relative;
             transition: all 0.3s ease; 
             
             img {
@@ -45,7 +45,7 @@
                 box-shadow: 0px 0px 27px -4px rgba(0, 0, 0, 0.466);
             }
             
-            > h4 {
+            h4 {
                 color: $font-grey;
                 margin-top: 30px !important;
                 font-size: 16px;
@@ -53,9 +53,9 @@
 
             i {
                 position: absolute;
-                width: 100%;
+                width: auto;
                 top: 56%;
-                left: 27%;
+                left: 68%;
                 opacity: 0;
                 font-size: 50px;
                 color: $font-light;
@@ -67,12 +67,12 @@
             }
 
             &:hover{
-                cursor: pointer;
                 background-color: $background-grey-dark;
                 h4{
                    color: $font-light !important; 
                 }
                 i {
+                    cursor: pointer;
                     top: 54% ;
                     opacity: 1;
                 }

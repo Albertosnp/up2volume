@@ -43,8 +43,9 @@
 
         .button{
             width: 100%;
-            background-color: $primary-color;
-            color: $font-light !important;
+            //background-color: $primary-blue;
+            //color: $font-light !important;
+            color: $font-dark;
             text-transform: uppercase;
             margin-top: 10px;
             border-radius: 50px;
@@ -64,7 +65,7 @@
         text-align: center;
 
         span {
-            color: $primary-color;
+            color: $primary-blue;
             font-weight: bold;
             &:hover{
                 cursor: pointer;

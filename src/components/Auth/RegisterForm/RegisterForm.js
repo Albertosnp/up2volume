@@ -95,7 +95,7 @@ const RegisterForm = ({ setSelectedForm }) => {
 
     return (
         <div className="register-form">
-            <h1>Empieza a escuchar con una cuenta de up2volume gratis.</h1>
+            <h1>Únete a up2volume y escucha música libre.</h1>
             <Form onSubmit={handlerSubmit} onChange={handlerChange}>
                 <Form.Field>
                     <Input

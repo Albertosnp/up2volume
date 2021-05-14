@@ -3,7 +3,7 @@ import AuthOptions from "../../components/Auth/AuthOptions/AuthOptions";
 import RegisterForm from "../../components/Auth/RegisterForm";
 import LoginForm from "../../components/Auth/LoginForm";
 import BackGroundAuth from "../../assets/jpg/background-auth.jpg"
-//import LogoNameWhite from "../../assets/png/logo-name-white.png"
+import LogoNameWhite from "../../assets/png/logo-blanco.png"
 
 import "./Auth.scss";
 
@@ -29,7 +29,7 @@ export const Auth = () => {
             <div className="auth__dark" />
             <div className="auth__box" >
                 <div className="auth__box-logo">
-                    {/* <img src={LogoNameWhite} alt="up2volume" /> */}
+                    <img src={LogoNameWhite} alt="up2volume" />
                 </div>
                 { handlerForm() }
             </div>      

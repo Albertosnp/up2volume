@@ -1,0 +1,17 @@
+@import "../../../scss/index.scss";
+
+.ui.table.inverted.list-songs {
+    background-color: transparent;
+    
+    th {
+        background-color: transparent;
+    }
+
+    tr {
+        color: $font-grey;
+        &:hover{
+            cursor: pointer;
+            color: $font-light;
+        }
+    }
+}

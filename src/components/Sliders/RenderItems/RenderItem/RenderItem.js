@@ -22,6 +22,7 @@ export const RenderItem = ({ item, folderImage, urlName }) => {
         .then(urlAvatar => {
             setAvatar(urlAvatar)
         })
+        .catch()
     }, [item, folderImage])
 
     return (

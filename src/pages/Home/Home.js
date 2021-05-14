@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { map } from "lodash";
 import { BannerHome } from "../../components/BannerHome/BannerHome";
 import { BasicSliderItems } from "../../components/Sliders/BasicSliderItems/BasicSliderItems";
+import { SongsSlider } from "../../components/Sliders/SongsSlider/SongsSlider";
 import firebase from "../../utils/Firebase";
 import "firebase/firestore";
 
 
 import "./Home.scss";
-import { SongsSlider } from "../../components/Sliders/SongsSlider/SongsSlider";
 
 const bbdd = firebase.firestore(firebase);
 
-export const Home = () => {
+export const Home = ({ playerSong }) => {
     const [artists, setArtists] = useState([]);
     const [albums, setAlbums] = useState([]);
     const [songs, setSongs] = useState([]);
@@ -89,6 +88,7 @@ export const Home = () => {
                 <SongsSlider 
                     title="Últimas temas añadidos"
                     data={songs}
+                    playerSong={playerSong}
                 />    
             </div>
         </>

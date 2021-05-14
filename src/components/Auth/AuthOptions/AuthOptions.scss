@@ -4,7 +4,7 @@
     margin-top: 50px;
     
     h2 {
-        font-size: 40px;
+        font-size: 36px;
         color: $font-light;
         font-weight: bold;
         text-align: center;
@@ -24,8 +24,9 @@
     }
 
     .ui.button.register {
-        background-color: $primary-color;
+        background-color: $primary-blue;
         color: $font-light;
+        // color: $font-dark;
     }
     .ui.button.login {
         background-color: $background-light;
