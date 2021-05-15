@@ -8,6 +8,7 @@ import { BasicSliderItems } from '../../components/Sliders/BasicSliderItems/Basi
 import "./Artist.scss";
 import { toast } from 'react-toastify';
 import { SongsSlider } from '../../components/Sliders/SongsSlider/SongsSlider';
+import { ListSongs } from '../../components/Songs/ListSongs/ListSongs';
 
 
 const bbdd = firebase.firestore(firebase);
@@ -20,7 +21,37 @@ const Artist = ({ match, playerSong }) => {
     const [singles, setSingles] = useState([]);
     const [allSongs, setAllSongs] = useState([]);
     const [statematch, setstatematch] = useState(match)
+    console.log(songs);
+    //Saca el artista con el id pasado 
+    useEffect(() => {
+        bbdd.collection("artists")
+            .doc(match?.params?.id)
+            .get()
+            .then(response => {
+                setArtist({
+                    ...response.data(),
+                    id: response.id
+                })
+            });
+    }, [match])//match?.params?.id    
 
+    //Obtiene todos los albumes del artista y los guarda en el estado Albums
+    useEffect(() => {
+        if (!artist) return;
+        bbdd.collection("albums")
+            .where("artist", "==", artist.id)
+            .get()
+            .then(albums => {
+                const arrayAlbums = [];
+                albums?.docs?.map(album => arrayAlbums.push({
+                    ...album.data(),
+                    id: album.id
+                }));
+                setAlbums(arrayAlbums);
+            })
+            .catch(() => toast.warning("No se pudieron cargar los álbumes del artista."))
+    }, [artist])
+    
     //Obtiene los singlesdel artista
     const getAllSingles = async () => {
         if (!artist) return null;
@@ -59,68 +90,22 @@ const Artist = ({ match, playerSong }) => {
         })
         
     };
-
+    //carga en el estado todas las canciones por album
     useEffect(() => {
-        // const arraySongs = [];
-        // (async () => {
-        //     await Promise.all(
-
-        //         albums.map(async album => {
-        //             await bbdd.collection("songs")
-        //                 .where("album", "==", album.id)
-        //                 .get()
-        //                 .then(response => {
-        //                     response?.docs.map(song => {
-        //                         arraySongs.push({
-        //                             ...song.data(),
-        //                             id: song.id
-        //                         })
-        //                     })
-        //                 })
-        //         })
-        //         );
-        //     setSongs(arraySongs);
-            
-        //     console.log("hola");
-        // })();
         const autoExe = async () => {
             await getAllSongsForAlbum();
-            await getAllSingles(); 
-            setAllSongs([...songs, ...singles]);
         };    
         autoExe();
         
     }, [albums])
-    
-    //Saca el artista con el id pasado 
+    //carga ene el stado todos los singles del artista
     useEffect(() => {
-        bbdd.collection("artists")
-            .doc(match?.params?.id)
-            .get()
-            .then(response => {
-                setArtist({
-                    ...response.data(),
-                    id: response.id
-                })
-            });
-    }, [match])//match?.params?.id    
-
-    //Obtiene todos los albumes del artista y los guarda en el estado Albums
-    useEffect(() => {
-        if (!artist) return;
-        bbdd.collection("albums")
-            .where("artist", "==", artist.id)
-            .get()
-            .then(albums => {
-                const arrayAlbums = [];
-                albums?.docs?.map(album => arrayAlbums.push({
-                    ...album.data(),
-                    id: album.id
-                }));
-                setAlbums(arrayAlbums);
-            })
-            .catch(() => toast.warning("No se pudieron cargar los álbumes del artista."))
-    }, [artist])
+        const autoExe = async () => {
+            await getAllSingles(); 
+            setAllSongs([...songs, ...singles]);
+        };    
+        autoExe();
+    }, [songs])
 
     return (
         <div className="artist">
@@ -138,6 +123,9 @@ const Artist = ({ match, playerSong }) => {
                     data={allSongs}
                     playerSong={playerSong}
                 />
+                <div className="album__songs">
+                <ListSongs songs={songs} playerSong={playerSong} />
+            </div>
             </div>
 
         </div>

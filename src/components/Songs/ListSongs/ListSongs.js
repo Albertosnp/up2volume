@@ -10,7 +10,7 @@ export const ListSongs = ({ songs, urlAvatar, playerSong }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell />
-                    <Table.HeaderCell>Titulo</Table.HeaderCell>
+                    <Table.HeaderCell>Singles del artista</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
