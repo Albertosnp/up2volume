@@ -2,9 +2,15 @@
 
 .ui.table.inverted.list-songs {
     background-color: transparent;
-    
+    width: 50%;
     th {
         background-color: transparent;
+    }
+    
+    h2{
+        border-bottom: 1px solid $border-grey-light;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
     }
 
     tr {
@@ -14,4 +20,9 @@
             color: $font-light;
         }
     }
+}
+h2{
+    border-bottom: 1px solid $border-grey-light !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 20px !important;
 }

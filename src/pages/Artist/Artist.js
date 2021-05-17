@@ -21,7 +21,7 @@ const Artist = ({ match, playerSong }) => {
     const [singles, setSingles] = useState([]);
     const [allSongs, setAllSongs] = useState([]);
     const [statematch, setstatematch] = useState(match)
-    console.log(songs);
+
     //Saca el artista con el id pasado 
     useEffect(() => {
         bbdd.collection("artists")
@@ -90,6 +90,7 @@ const Artist = ({ match, playerSong }) => {
         })
         
     };
+    
     //carga en el estado todas las canciones por album
     useEffect(() => {
         const autoExe = async () => {
@@ -98,20 +99,29 @@ const Artist = ({ match, playerSong }) => {
         autoExe();
         
     }, [albums])
+    
     //carga ene el stado todos los singles del artista
     useEffect(() => {
         const autoExe = async () => {
             await getAllSingles(); 
-            setAllSongs([...songs, ...singles]);
+            
         };    
         autoExe();
     }, [songs])
+
+    useEffect(() => {
+        if (!songs || !singles) return null
+        setAllSongs([...songs, ...singles]);
+    }, [songs, singles])
 
     return (
         <div className="artist">
             {artist && <BannerArtist artist={artist} />}
             {artist && <AvatarArtist artist={artist} />}
             <div className="artist__content">
+                <div className="album__songs">
+                    <ListSongs songs={singles} playerSong={playerSong} title="Singles"/>
+                </div>
                 <BasicSliderItems
                     title="Álbumes"
                     data={albums}
@@ -123,9 +133,6 @@ const Artist = ({ match, playerSong }) => {
                     data={allSongs}
                     playerSong={playerSong}
                 />
-                <div className="album__songs">
-                <ListSongs songs={songs} playerSong={playerSong} />
-            </div>
             </div>
 
         </div>

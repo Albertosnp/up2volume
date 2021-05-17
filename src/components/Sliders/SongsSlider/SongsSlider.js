@@ -48,7 +48,7 @@ export const SongsSlider = ({ title, data, playerSong }) => {
         ]
     }
     
-    //if (data.lenght < 5) return null;
+    if (data.length < 5) return null;
 
     return (
         <div className="songs-slider">

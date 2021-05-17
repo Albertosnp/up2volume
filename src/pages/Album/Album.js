@@ -86,7 +86,7 @@ const Album = ({ match, playerSong }) => {
         <div className="album">
             <HeaderAlbum artist={artist} album={album} urlAvatar={urlAvatar} />
             <div className="album__songs">
-                <ListSongs songs={songs} urlAvatar={urlAvatar} playerSong={playerSong} />
+                <ListSongs songs={songs} urlAvatar={urlAvatar} playerSong={playerSong} title="Titulo" />
             </div>
         </div>
     )

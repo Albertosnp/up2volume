@@ -147,7 +147,7 @@ export const AddSongForm = ({ setShowModal }) => {
     const handlerChangeName = (event) => {
         setFormData({
             ...formData,
-            name: event.target.value
+            name: event.target.value.trim()
         })
     };
 
