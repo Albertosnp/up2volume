@@ -46,16 +46,23 @@
                 }
             }
         }
-
-        .ui.progress {
+        .bar_time{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
             margin: 0;
-            background-color: $font-grey-dark;
+        }
+        .ui.progress {
+            width: 85% !important;
+            margin: 0 !important;
+            background-color: $font-grey-dark !important;
             .bar {
-                min-width: 0;
-                background-color: $font-light;
+                min-width: 0 !important;
+                background-color: $font-light !important;
                 .progress{
-                    display: none;
+                    display: none !important;
                 }
             }
         }

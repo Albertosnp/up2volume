@@ -8,12 +8,17 @@ export const Player = ({ songData }) => {
     const [playedSeconds, setPlayedSeconds] = useState(0);
     const [totalSeconds, setTotalSeconds] = useState(0);
     const [playing, setPlaying] = useState(false)
-    const [volume, setVolume] = useState(0.3)
+    const [volume, setVolume] = useState(0.4)
     const [duration, setDuration] = useState(0)
+    const [seconds, setSeconds] = useState(0)
+    const [minutes, setMinutes] = useState(0)
+    const [totalMinutes, setTotalMinutes] = useState('')
 
     useEffect(() => {
         if (!songData?.url) return;
         onStart()
+        setMinutes(0)
+        setSeconds(0)
 
     }, [songData])
 
@@ -31,12 +36,38 @@ export const Player = ({ songData }) => {
     };
 
     const onProgress = (data) => {
+        let playedSec = data.playedSeconds.toFixed(0)
+        playedSec /= 100
+
+        if (seconds < 60) {
+            
+            setSeconds(prev => prev + 1)
+        }
+        console.log(seconds);
+        if (seconds >= 59 ) {
+            setSeconds(0)
+            const currentMinutes = minutes + 1
+            setMinutes(currentMinutes)
+        }
         setPlayedSeconds(data.playedSeconds.toFixed(0))
         setTotalSeconds(data.loadedSeconds)
+
+        const total = `${minutes}:${seconds}`
+        setTotalMinutes(total)
     };
     const onDuration = (data) => {
-        const duration = data / 60
-        setDuration(duration.toFixed(2))
+        let duration = data / 60
+        duration = duration.toFixed(2)
+        if (duration % 1 > .60) {
+            let decimal = duration % 1
+            let entero = Math.floor(duration)
+            entero += 1
+            decimal = decimal * 10
+            decimal = decimal.toFixed(1) % 1
+            decimal = decimal / 10 
+            duration = entero + decimal
+        }
+        setDuration(duration)
     };
 
     return (
@@ -44,28 +75,30 @@ export const Player = ({ songData }) => {
             <Grid>
                 <Grid.Column width={6} className="left">
                     <Image src={songData?.image} />
-                    {songData?.name} 
+                    {songData?.name}
                 </Grid.Column>
                 <Grid.Column width={6} className="center">
                     <div className="controls">
-                        {playing? 
-                        ( <Icon name="pause" onClick={onPause} /> )
-                        :
-                        ( <Icon name="play" onClick={onStart} /> )
+                        {playing ?
+                            (<Icon name="pause" onClick={onPause} />)
+                            :
+                            (<Icon name="play" onClick={onStart} />)
                         }
                     </div>
-                    <Progress 
-                        progress="value"
-                        value={playedSeconds}
-                        total={totalSeconds}  
-                        size="tiny"
-                        
-                    />
-                    total:{duration} value: {playedSeconds}
+                    <div className="bar_time">
+                        {totalMinutes? totalMinutes : '0:00'}
+                        <Progress
+                            progress="value"
+                            value={playedSeconds}
+                            total={totalSeconds}
+                            size="tiny"
+                        />
+                        {duration? duration.toString().replace('.',':') : '0:00'}
+                    </div>
                 </Grid.Column>
                 <Grid.Column width={4} className="right">
-                    <Input 
-                        label={<Icon name="volume up"/>}
+                    <Input
+                        label={<Icon name="volume up" />}
                         type="range"
                         max={1}
                         min={0}
@@ -75,7 +108,7 @@ export const Player = ({ songData }) => {
                         value={volume}
                     />
                 </Grid.Column>
-                <ReactPlayer 
+                <ReactPlayer
                     className="react-player"
                     url={songData?.url}
                     playing={playing}
@@ -85,7 +118,7 @@ export const Player = ({ songData }) => {
                     onProgress={onProgress}
                     onDuration={onDuration}
                 />
-            </Grid>           
+            </Grid>
         </div>
     )
 }
