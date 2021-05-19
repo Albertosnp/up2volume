@@ -1,39 +1,43 @@
 @import "../../scss/index.scss";
 
 .auth {
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__dark {
+    position: absolute;
+    top: 0;
+    left: 0;
     min-height: 100vh;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+    min-width: 100%;
+    background-color: $background-dark;
+    opacity: 0.25;
+    z-index: 0;
+  }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  &__box {
+    position: relative;
+    background-color: $background-grey-dark;
+    width: 500px;
+    z-index: 1;
+    padding: 40px 70px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 1px 16px 13px rgba(0, 0, 0, 0.66);
+    -moz-box-shadow: 0px 1px 16px 13px rgba(0, 0, 0, 0.66);
+    box-shadow: 0px 1px 16px 13px rgba(0, 0, 0, 0.66);
 
-    &__dark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        min-height: 100vh;
-        min-width: 100%;
-        background-color: $background-dark;
-        opacity: 0.75;
-        z-index: 0;
+    &-logo {
+      margin-top: 9%;
+      text-align: center;
+      img {
+        width: 200px;
+      }
     }
-
-    &__box {
-        position: relative;
-        background-color: $background-grey-dark;
-        width: 500px;
-        z-index: 1;
-        padding: 40px 70px;
-        border-radius: 10px;
-
-        &-logo {
-            text-align: center;
-            img{
-                width: 200px;
-            }
-        }
-    }
+  }
 }

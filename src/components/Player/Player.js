@@ -39,20 +39,20 @@ export const Player = ({ songData }) => {
         let playedSec = data.playedSeconds.toFixed(0)
         playedSec /= 100
 
-        if (seconds < 60) {
-            
-            setSeconds(prev => prev + 1)
-        }
-        console.log(seconds);
-        if (seconds >= 59 ) {
+        if (seconds < 60) setSeconds(prev => prev + 1)
+
+        if (seconds >= 59) {
             setSeconds(0)
             const currentMinutes = minutes + 1
             setMinutes(currentMinutes)
         }
         setPlayedSeconds(data.playedSeconds.toFixed(0))
         setTotalSeconds(data.loadedSeconds)
-
-        const total = `${minutes}:${seconds}`
+        
+        let total = ''
+        if (seconds < 10) total = `${minutes}:0${seconds}`
+        else total = `${minutes}:${seconds}`
+        
         setTotalMinutes(total)
     };
     const onDuration = (data) => {
@@ -64,7 +64,7 @@ export const Player = ({ songData }) => {
             entero += 1
             decimal = decimal * 10
             decimal = decimal.toFixed(1) % 1
-            decimal = decimal / 10 
+            decimal = decimal / 10
             duration = entero + decimal
         }
         setDuration(duration)
@@ -86,14 +86,18 @@ export const Player = ({ songData }) => {
                         }
                     </div>
                     <div className="bar_time">
-                        {totalMinutes? totalMinutes : '0:00'}
+                        <div className="numbers">
+                            {totalMinutes ? totalMinutes : '0:00'}
+                        </div>
                         <Progress
                             progress="value"
                             value={playedSeconds}
                             total={totalSeconds}
                             size="tiny"
                         />
-                        {duration? duration.toString().replace('.',':') : '0:00'}
+                        <div className="numbers">
+                            {duration ? duration.toString().replace('.', ':') : '0:00'}
+                        </div>
                     </div>
                 </Grid.Column>
                 <Grid.Column width={4} className="right">
