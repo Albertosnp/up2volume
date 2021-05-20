@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Button, Icon, Form, Input } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 import { isValidateEmail } from "../../../utils/Validations";
-import firebase from "../../../utils/Firebase";
-import "firebase/auth";
+import { loginUserFirebaseApi } from '../../../services/apiConnection';
 
 import "./LoginForm.scss";
 
@@ -34,7 +33,8 @@ const LoginForm = ({ setSelectedForm }) => {
         setShowPassword(!showPassword);
     };
 
-    const handlerSubmit = () => {
+    const handlerSubmit = (event) => {
+        event.preventDefault();
         setFormError({});
         let errors = {};
         let formOk = true;
@@ -52,20 +52,17 @@ const LoginForm = ({ setSelectedForm }) => {
 
         if (formOk) {
             setIsLoading(true);
-            
-            firebase
-            .auth()
-            .signInWithEmailAndPassword( formData.email, formData.password)
-            .then(response  => {
-                setUser(response.user);
-                setUserActive(response.user.emailVerified);
-                //Si evaluo el estado no entra...
-                if (!response.user.emailVerified) {
-                    toast.warning("Debes verificar la cuenta.")    
-                }
-            })
-            .catch( error =>  handlerErrors(error.code))
-            .finally(() => setIsLoading(false));
+
+            loginUserFirebaseApi(formData.email, formData.password)
+                .then(response => {
+                    //Loguea y desloguea automaticamente si el email no esta verificado
+                    setUser(response.user);
+                    setUserActive(response.user.emailVerified);
+                    //Si evaluo el estado no entra...
+                    if (!response.user.emailVerified) toast.warning("Debes verificar la cuenta.")
+                })
+                .catch(error => handlerErrors(error.code))
+                .finally(() => setIsLoading(false));
         }
 
     };
@@ -88,7 +85,7 @@ const LoginForm = ({ setSelectedForm }) => {
                         ""
                     }
                 </Form.Field>
-                <Form.Field>    
+                <Form.Field>
                     <Input
                         type={showPassword ? "text" : "password"}
                         name="password"
@@ -112,10 +109,10 @@ const LoginForm = ({ setSelectedForm }) => {
 
             {   //Si el usuario no esta activo, se muestra componente para reenvio de email
                 !userActive ?
-                    <ButtonReSendEmailVerification user={user} setIsLoading={setIsLoading} setUserActive={setUserActive}/>
-                :
-                ""   
-            }        
+                    <ButtonReSendEmailVerification user={user} setIsLoading={setIsLoading} setUserActive={setUserActive} />
+                    :
+                    ""
+            }
 
             <div className="login-form__options">
                 <p onClick={() => setSelectedForm(null)}>Volver</p>
@@ -131,18 +128,19 @@ const LoginForm = ({ setSelectedForm }) => {
 const ButtonReSendEmailVerification = ({ user, setIsLoading, setUserActive }) => {
 
     const reSendVerificationEmail = () => {
+
         user.sendEmailVerification()
-        .then(() => toast.success("Se ha enviado el email de verificación."))
-        .catch( error => handlerErrors(error.code))
-        .finally( () => {
-            setIsLoading(false);
-            setUserActive(true);
-        })
+            .then(() => toast.success("Se ha enviado el email de verificación."))
+            .catch(error => handlerErrors(error.code))
+            .finally(() => {
+                setIsLoading(false);
+                setUserActive(true);
+            })
     };
 
     return (
         <div className="resend-verification-email">
-            <p>Si no has recibido el email de verificación puedes 
+            <p>Si no has recibido el email de verificación puedes
                 volver a enviarlo haciendo click <span onClick={reSendVerificationEmail}>aquí.</span>
             </p>
         </div>
@@ -151,15 +149,15 @@ const ButtonReSendEmailVerification = ({ user, setIsLoading, setUserActive }) =>
 //Manejador del error pasado por parametro, y lanza un toast
 const handlerErrors = (code) => {
     switch (code) {
-        case "auth/wrong-password": 
+        case "auth/wrong-password":
             toast.warning("El usuario o la contraseña no son correctos.");
             break;
         case "auth/too-many-requests":
             toast.warning("Has enviado demasiadas solicitudes de confirmación.");
-        break;
+            break;
         case "auth/user-not-found":
             toast.warning("El usuario o la contraseña no son correctos.");
-        break;
+            break;
         default:
             break;
     }

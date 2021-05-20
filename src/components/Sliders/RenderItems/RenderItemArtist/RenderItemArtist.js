@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "semantic-ui-react";
-import firebase from "../../../../utils/Firebase";
-import "firebase/storage";
+import { getUrlAvatarApi } from "../../../../services/apiConnection";
 
 import "./RenderItemArtist.scss"
 
@@ -12,15 +11,15 @@ export const RenderItemArtist = ({ item, folderImage, urlName }) => {
     const style = {
         backgroundImage: `url(${avatar})`,
     }
-
+    //Recoge la imagen del item
     useEffect(() => {
-        firebase
-        .storage()
-        .ref(`${folderImage}/${item.avatar}`)
-        .getDownloadURL()
-        .then(urlAvatar => {
-            setAvatar(urlAvatar)
-        })
+        const fetchMyAPI = async () => {
+            try {
+                const urlAvatar = await getUrlAvatarApi(`${folderImage}/${item.avatar}`)
+                setAvatar(urlAvatar)
+            } catch {}
+        }; 
+        fetchMyAPI()
     }, [item, folderImage])
 
     return (
@@ -31,7 +30,6 @@ export const RenderItemArtist = ({ item, folderImage, urlName }) => {
                 image={avatar}/>
                 <h4>{item.name}</h4>
             </div>
-        </Link>
-        
+        </Link>      
     )
 };

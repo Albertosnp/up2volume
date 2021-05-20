@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, Form, Input } from 'semantic-ui-react';
-import firebase from "../../utils/Firebase";
-import "firebase/auth";
+import { updateNameUser } from '../../services/apiConnection';
 
-export const UserName = ({ user, setShowModal, setTitleModal, setContentModal, setReloadApp}) => {
+export const UserName = ({ user, setShowModal, setTitleModal, setContentModal, setReloadApp }) => {
 
     const onEdit = () => {
         setContentModal(<ChangeDisplayNameForm displayName={user.displayName} setShowModal={setShowModal} setReloadApp={setReloadApp} />)
         setTitleModal("Actualizar nombre")
-        setShowModal( true )
+        setShowModal(true)
     };
 
     return (
@@ -27,31 +26,31 @@ const ChangeDisplayNameForm = ({ displayName, setShowModal, setReloadApp }) => {
     const [isLoading, setIsLoading] = useState(false)
 
     const handlerSubmit = () => {
-        
+
         const notChange = (displayName === name || !name);
         if (!notChange) {
             setIsLoading(true)
-            firebase.auth().currentUser.updateProfile({ displayName: name})
-            .then(() => {
-                setReloadApp(prevState => !prevState)
-                toast.success("El nombre se cambió correctamente.")
-                setIsLoading(false);
-                setShowModal(false);
-            })
-            .catch(() => {
-                toast.error("No se pudo cambiar el nombre.")
-                setIsLoading(false);
-                setShowModal(false);
-            })   
-        }else 
-            setShowModal(false)    
-       
+            updateNameUser(name)
+                .then(() => {
+                    setReloadApp(prevState => !prevState)
+                    toast.success("El nombre se cambió correctamente.")
+                    setIsLoading(false);
+                    setShowModal(false);
+                })
+                .catch(() => {
+                    toast.error("No se pudo cambiar el nombre.")
+                    setIsLoading(false);
+                    setShowModal(false);
+                })
+        } else
+            setShowModal(false)
+
     };
 
     return (
-        <Form onSubmit={ handlerSubmit } >
+        <Form onSubmit={handlerSubmit} >
             <Form.Field>
-                <Input defaultValue={displayName} name="userName" onChange={ e => setName(e.target.value)}/>
+                <Input defaultValue={displayName} name="userName" onChange={e => setName(e.target.value)} />
             </Form.Field>
             <Button loading={isLoading}>Actualizar</Button>
         </Form>

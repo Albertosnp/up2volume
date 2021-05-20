@@ -67,7 +67,8 @@ export const AddArtistForm = ({ setShowModal }) => {
         });
     };
     
-    const handlerSubmit = async () => {
+    const handlerSubmit = async (event) => {
+        event.preventDefault();
         //Validacion de campos
         if (!formData.name) return toast.warning("Debes añadir el nombre del artista.");
         if (!urlBanner.content) return toast.warning("Debes añadir el banner del artista.");

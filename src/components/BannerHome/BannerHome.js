@@ -1,34 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import firebase from "../../utils/Firebase";
 import { Image } from 'semantic-ui-react';
-import "firebase/storage";
-
-import "./BannerHome.scss";
 import alertErrors from '../../utils/AlertError';
-
+import { downloadBannersApi } from '../../services/apiConnection';
+import "./BannerHome.scss";
 
 export const BannerHome = () => {
     const [bannerUrl, setBannerUrl] = useState(null);
 
-    const downloadBanners = async () => {
-        try {
-            const url = await firebase
-                            .storage()
-                            .ref("others/banner-home.jpg")
-                            .getDownloadURL();
-            return url;
-        } catch (error) {
-            alertErrors(error.code);
-        }
-    };
     const style = {
         backgroundImage: `url('${bannerUrl}')`
     }
-
+    //Recupera los banners principales
     useEffect(() => {
         const getUrl = async () => {
-            const url = await downloadBanners();
-            setBannerUrl(url);
+            try {
+                const url = await downloadBannersApi();
+                setBannerUrl(url);
+            } catch (error) {
+                alertErrors(error.code);
+            }    
         };
         getUrl();
     }, []);
@@ -36,7 +26,6 @@ export const BannerHome = () => {
     if (!bannerUrl) return null;
     return (
         <div className="banner-home" style={style}>
-            {/* <Image src={bannerUrl} /> */}
         </div>
     )
 }

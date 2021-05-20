@@ -9,12 +9,6 @@ export const ListSongs = ({ songs, urlAvatar, playerSong, title }) => {
         <>
         <h2>{title}</h2>
         <Table inverted className="list-songs">
-            {/* <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell />
-                    <Table.HeaderCell>{title}</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header> */}
             <Table.Body>
                 {
                     songs.map(song => (<Song key={song.id} song={song} avatar={urlAvatar} playerSong={playerSong} />))

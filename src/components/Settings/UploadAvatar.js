@@ -3,11 +3,7 @@ import { Image } from "semantic-ui-react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 import AvatarDefault from "../../assets/png/user.png";
-import firebase from "../../utils/Firebase";
-import "firebase/storage";
-import "firebase/database"
-import "firebase/auth";
-
+import { getUrlAvatarApi, uploadImageApi, updateUserAvatarApi } from "../../services/apiConnection";
 
 export const UploadAvatar = ({ user, setReloadApp }) => {
   const [avatarUrl, setAvatarUrl] = useState(user.photoUrl);
@@ -22,7 +18,9 @@ export const UploadAvatar = ({ user, setReloadApp }) => {
         //TODO averiguar porque no crea el objeto
         const url = URL.createObjectURL(file)
         setAvatarUrl(url);
-        uploadImage(file).then(() => updateUserAvatar());
+        //Sube la imagen a firebase con el uid del usuario a la carpeta/tabla de imagenes
+        uploadImageApi(user.uid, file)
+          .then(() => updateUserAvatar());
     }
     if (!isGoodSize) toast.warning("El avatar no puede exceder de 300kb");
 
@@ -34,27 +32,20 @@ export const UploadAvatar = ({ user, setReloadApp }) => {
     noKeyboard: true,
     onDrop,
   });
-  //Sube la imagen a firebase con el uid del usuario a la carpeta/tabla de imagenes
-  const uploadImage = (file) => {
-    const reference = firebase
-    .storage()
-    .ref()
-    .child(`avatar/${user.uid}`);
-
-    return reference.put(file);
-  };
     
   //Actualiza la imagen del usuario en la bbdd de usuarios
   const updateUserAvatar = () => {
-    firebase
-    .storage()
-    .ref(`avatar/${user.uid}`) //con referencia del usuario, trae la url del avatar
-    .getDownloadURL()
-    .then( async response => {//llamada a bbdd (coleccion de usuarios) y actualiza la img
-        await firebase.auth().currentUser.updateProfile({ photoURL: response});
+    const fetchMyAPI = async () => {
+      try {
+        const urlAvatar = await getUrlAvatarApi(`avatar/${user.uid}`)
+        await updateUserAvatarApi(urlAvatar)//llamada a bbdd (coleccion de usuarios) y actualiza la img
         setReloadApp( prevState => !prevState); // Hace recargar todos los componentes
-    })
-    .catch(() => toast.error("Error al actualizar el avatar"));
+      } catch {
+        toast.error("Error al actualizar el avatar")
+      }
+
+    };
+    fetchMyAPI()
   };
 
   return (

@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { Button, Form, Icon, Input } from 'semantic-ui-react';
 import alertErrors from '../../utils/AlertError';
-import { reAuthenticate } from '../../utils/Api';
-import firebase from '../../utils/Firebase';
-import "firebase/auth";
+import { logOutApi, reAuthenticateApi, updatePasswordApi } from '../../services/apiConnection';
 
 export const UserPassword = ({ setShowModal, setTitleModal, setContentModal }) => {
     const handlerSumbit = () => {
@@ -35,7 +33,6 @@ const ChangePasswordForm = ({ setShowModal }) => {
             [event.target.name]: event.target.value
         })
     };
-
     const checkPasswords = (currentPassword, newPass1, newPass2) => {
         const notValidPassword = (!currentPassword || !newPass1 || !newPass2);
         if (notValidPassword) {
@@ -64,7 +61,8 @@ const ChangePasswordForm = ({ setShowModal }) => {
         return true
     };
 
-    const handlerSubmit = () => {
+    const handlerSubmit = (event) => {
+        event.preventDefault();
         const currentPassword = formData.currentPassword.trim();
         const newPass1 = formData.newPass1.trim();
         const newPass2 = formData.newPass2.trim();
@@ -73,14 +71,12 @@ const ChangePasswordForm = ({ setShowModal }) => {
         if (isOkPass) {
             setIsLoading(true);
             //Se reautentica el usuario
-            reAuthenticate(currentPassword)
-                .then( () => {
-                    const currentUser = firebase.auth().currentUser;
-                    //CAmbio de password
-                    currentUser.updatePassword(newPass1)
+            reAuthenticateApi(currentPassword)
+                .then( () => {//CAmbio de password
+                    updatePasswordApi(newPass1)
                         .then(() => {
                             toast.success("La contraseña se cambió correctamente.");
-                            firebase.auth().sesignOut();//Se desloguea al usuario
+                            logOutApi()//Se desloguea al usuario
                         })
                         .catch(error => alertErrors(error.code));
 
@@ -91,7 +87,6 @@ const ChangePasswordForm = ({ setShowModal }) => {
                 }) 
             setIsLoading(false);
         }
-
     };
 
     return (

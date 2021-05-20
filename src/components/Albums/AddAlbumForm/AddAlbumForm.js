@@ -96,7 +96,8 @@ export const AddAlbumForm = ({ setShowModal }) => {
             })
     };
 
-    const handlerSubmit = async () => {
+    const handlerSubmit = async (event) => {
+        event.preventDefault();
         //Validacion de campos
         if (!formData.name) return toast.warning("Debes añadir el nombre del album.");
         if (!formData.artist) return toast.warning("Debes seleccionar un artista.");

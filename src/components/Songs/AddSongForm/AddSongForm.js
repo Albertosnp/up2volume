@@ -3,13 +3,8 @@ import { Button, Dropdown, Form, Icon, Input } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 import { useDropzone } from 'react-dropzone';
 import { v4 as uuidv4 } from 'uuid';
-import firebase from '../../../utils/Firebase';
-import "firebase/firestore";
-import "firebase/storage";
-
-import "./AddSongForm.scss";
-
-const bbdd = firebase.firestore(firebase);
+import { getAlbumsOfArtistApi, getAllOfAlbumsApi, uploadDataSongApi, uploadFileApi } from '../../../services/apiConnection';
+import "./AddSongForm.scss"
 
 const INITIAL_FORM = {
     name: '',
@@ -29,10 +24,9 @@ export const AddSongForm = ({ setShowModal }) => {
     // Obtiene todos los albumes segun el artista seleccionado de la bbdd
     useEffect(() => {
         if (!artist) return;
-        bbdd.collection("albums")
-            .where("artist", "==", artist.id)
-            .get()
-            .then(albums => {
+        const fetchMyAPI = async () => {
+            try {
+                const albums = await getAlbumsOfArtistApi(artist.id)
                 const arrayAlbums = [];
                 albums?.docs?.map(album => arrayAlbums.push({
                     key: album.id,
@@ -40,15 +34,18 @@ export const AddSongForm = ({ setShowModal }) => {
                     text: album.data().name
                 }));
                 setAlbums(arrayAlbums);
-            })
-            .catch(() => toast.warning("No se pudieron cargar los álbumes del artista."))
+            } catch {
+                toast.warning("No se pudieron cargar los álbumes del artista.")
+            }
+        };
+        fetchMyAPI()
     }, [artist])
 
     //Obtiene todos los artistas de la bbdd
     useEffect(() => {
-        bbdd.collection("artists")
-            .get()
-            .then(artists => {
+        const fetchMyAPI = async () => {
+            try {
+                const artists = await getAllOfAlbumsApi()
                 const arrayArtists = [];
                 artists?.docs?.map(artist => {
                     arrayArtists.push({
@@ -58,8 +55,11 @@ export const AddSongForm = ({ setShowModal }) => {
                     });
                 })
                 setArtists(arrayArtists);
-            })
-            .catch(() => toast.warning("No se han podido cargar los artistas"))
+            } catch {
+                toast.warning("No se han podido cargar los artistas")
+            }
+        };
+        fetchMyAPI()
     }, [])
 
     const { getRootProps, getInputProps } = useDropzone({
@@ -71,26 +71,8 @@ export const AddSongForm = ({ setShowModal }) => {
         }
     })
 
-    //Sube a la bbdd el fichero y devuelve una promesa
-    const uploadFile = (idFile) => {
-        const ref = firebase.storage()
-                            .ref()
-                            .child(`songs/${idFile}`);
-        
-        return ref.put(file);                    
-    };
-    //Sube a la bbdd la informacion del tema
-    const uploadDataSong = (idFile) => {
-        bbdd.collection("songs")
-            .add({
-                name: formData.name,
-                album: formData.album,
-                fileName: idFile,
-                artist: artist.id
-            })
-    };
-
-    const handlerSubmit = async () => {
+    const handlerSubmit = async (event) => {
+        event.preventDefault();
         //Validacion de campos
         if (!formData.name) return toast.warning("Debes añadir el nombre del tema.");
         if (!formData.artist) return toast.warning("Debes asignar el tema a un artista existente.");
@@ -100,14 +82,16 @@ export const AddSongForm = ({ setShowModal }) => {
         const idFileSong = uuidv4(); //para id unico
         //Sube el fichero
         try {
-            await uploadFile(idFileSong);
+            //Sube a la bbdd el fichero y devuelve una promesa
+            await uploadFileApi(idFileSong, file);
         } catch {
             toast.warning("Hubo un error al subir el fichero.");
             setIsLoading(false);
         }
         //Sube la info del tema
         try {
-            await uploadDataSong(idFileSong);
+            //Sube a la bbdd la informacion del tema
+            await uploadDataSongApi(idFileSong, formData.name, formData.album, artist.id);
             toast.success("El tema se ha subido correctamente.");
             setIsLoading(false);
             setShowModal(false);
@@ -124,7 +108,7 @@ export const AddSongForm = ({ setShowModal }) => {
         //Cambia para poder filtrar sus albumes
         setArtist({
             'id': data.value
-        }) 
+        })
         //Actualiza estado de datos de formulario
         setFormData({
             ...formData,
@@ -154,13 +138,13 @@ export const AddSongForm = ({ setShowModal }) => {
     return (
         <Form className="add-song-form" onSubmit={handlerSubmit} >
             <Form.Field>
-                <Input 
+                <Input
                     onChange={handlerChangeName}
                     placeholder="Nombre del tema"
                 />
             </Form.Field>
             <Form.Field>
-                <Dropdown 
+                <Dropdown
                     placeholder="Artistas disponibles..."
                     search
                     selection
@@ -170,7 +154,7 @@ export const AddSongForm = ({ setShowModal }) => {
                 />
             </Form.Field>
             <Form.Field>
-                <Dropdown 
+                <Dropdown
                     placeholder="Álbumes disponibles..."
                     search
                     selection
@@ -181,14 +165,14 @@ export const AddSongForm = ({ setShowModal }) => {
                 />
             </Form.Field>
             <Form.Field>
-                <div className="song-upload" { ...getRootProps() }>
-                    <input { ...getInputProps() }/> 
+                <div className="song-upload" {...getRootProps()}>
+                    <input {...getInputProps()} />
                     <Icon name="cloud upload" className={file && "load"} />
                     <div>
-                        {file? 
-                            ( <p>Tema añadido: <span>{file.name}</span></p> )
+                        {file ?
+                            (<p>Tema añadido: <span>{file.name}</span></p>)
                             :
-                            ( <p>Arrasta tu tema o haz click <span>aquí</span>.</p> )
+                            (<p>Arrasta tu tema o haz click <span>aquí</span>.</p>)
                         }
                     </div>
                 </div>

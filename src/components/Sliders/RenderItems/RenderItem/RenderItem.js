@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "semantic-ui-react";
-import firebase from "../../../../utils/Firebase";
-import "firebase/storage";
 
 import "./RenderItem.scss"
-
+import { getUrlAvatarApi } from "../../../../services/apiConnection";
 
 export const RenderItem = ({ item, folderImage, urlName }) => {
     const [avatar, setAvatar] = useState(null);
@@ -14,22 +12,18 @@ export const RenderItem = ({ item, folderImage, urlName }) => {
         backgroundImage: `url(${avatar})`,
     }
 
+    //Recoge la imagen del item
     useEffect(() => {
-        firebase
-        .storage()
-        .ref(`${folderImage}/${item.avatar}`)
-        .getDownloadURL()
-        .then(urlAvatar => {
-            setAvatar(urlAvatar)
-        })
-        .catch()
+        const fetchMyAPI = async () => {
+            try {
+                const urlAvatar = await getUrlAvatarApi(`${folderImage}/${item.avatar}`)
+                setAvatar(urlAvatar)
+            } catch {}
+        }; 
+        fetchMyAPI()
     }, [item, folderImage])
 
     return (
-        // <div className="basic-slider-items__list-item">
-        //     <div className="avatar" style={style}/>
-        //     <h3>{item.name}</h3>
-        // </div>
         <Link to={`/${urlName}/${item.id}`} >
             <div className="object__card">
                 <Card  className="basic-slider-items__list-item"
@@ -37,6 +31,5 @@ export const RenderItem = ({ item, folderImage, urlName }) => {
                 <h4>{item.name}</h4>
             </div>
         </Link>
-        
     )
 };

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Icon, Button, Form, Input } from 'semantic-ui-react';
 import { toast } from 'react-toastify'
-import fireBase from "../../../utils/Firebase"
+import { changeUserNameApi, sendEmailVerificationApi, registerUserFirebaseApi} from '../../../services/apiConnection';
 import { isValidateEmail } from '../../../utils/Validations';
 
-import "firebase/auth";
 import "./RegisterForm.scss";
 
 
@@ -36,7 +35,8 @@ const RegisterForm = ({ setSelectedForm }) => {
     };
 
     //Funcion que envia al backend (firebase) el registro de usuario
-    const handlerSubmit = () => {
+    const handlerSubmit = (event) => {
+        event.preventDefault();
         setFormError({});
         let errors = {};
         let formOk = true;
@@ -59,9 +59,7 @@ const RegisterForm = ({ setSelectedForm }) => {
         if (formOk) {
             //Añade el spinner de cargando
             setIsLoading(true);
-            fireBase
-                .auth()
-                .createUserWithEmailAndPassword(formData.email, formData.password)
+            registerUserFirebaseApi(formData.email, formData.password)
                 .then(() => {
                     // toast.success("Registro completado");
                     changeUserName();
@@ -71,26 +69,18 @@ const RegisterForm = ({ setSelectedForm }) => {
                 .finally(() => {
                     setIsLoading(false);
                     setSelectedForm(null);//Redirecciona al menu de eleccion de formulario (Login - )
-                });
-                
+                });    
         }
-
     };
+
     //Conecta con Firebase y Registra el nombre de usuario en la bbdd del user actual
     const changeUserName = () => {
-        fireBase.auth().currentUser.updateProfile({
-            displayName: formData.userName
-        })
-        .catch(() => toast.error("Error al asignar el nombre de usuario."))    
+        changeUserNameApi(formData.userName) 
     };
 
     //Enviar el email para verificar la cuenta 
     const sendEmailVerification = () => {
-        fireBase.auth().currentUser.sendEmailVerification()
-        .then(() => 
-            toast.success("Se ha enviado un email de verificación."))
-        .catch(() => 
-            toast.error("Error al enviar el email de verificación."));
+        sendEmailVerificationApi()
     };
 
     return (

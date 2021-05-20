@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Slider from "react-slick";
-import firebase from '../../../utils/Firebase';
-import "firebase/firestore";
-import "firebase/storage";
-import { toast } from 'react-toastify';
 import { Card, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { getArtistDepensSongApi, getUrlAvatarApi, getArtistDepensAlbumApi } from '../../../services/apiConnection';
 
 import "./SongsSlider.scss";
-
-const bbdd = firebase.firestore(firebase);
 
 export const SongsSlider = ({ title, data, playerSong }) => {
     const [stateData, setstateData] = useState(data)
@@ -68,41 +63,42 @@ const Song = ({ item, playerSong }) => {
 
     //Trae la imagen correspondiente
     const getImage = (url) => {
-        firebase.storage()
-            .ref(url)
-            .getDownloadURL()
-            .then(imageUrl => {
-                setAvatar(imageUrl);
-            })
-            .catch()
+        const fetchMyAPI = async () => {
+            try {
+                const urlAvatar = await getUrlAvatarApi(url)
+                setAvatar(urlAvatar)
+            } catch {}
+        }; 
+        fetchMyAPI()
     };
 
     //Si no esta asignado a un album -> es un single, trae la info e id de la imagen del artista en vez del album
     useEffect(() => {
         if (!item) return
         if (item.album === '') {
-            bbdd.collection("artists")
-                .doc(item.artist)
-                .get()
-                .then(artist => {
+            const fetchMyAPI = async () => {
+                try {
+                    const artist = await getArtistDepensSongApi(item.artist)
                     setElementInfo({
                         ...artist.data(),
                         id: artist.id
                     })
                     getImage(`artists/avatars/${artist.data().avatar}`);
-                })
-                .catch()
+                } catch {}
+            };
+            fetchMyAPI()
         } else {
-            bbdd.collection("albums")
-                .doc(item.album)
-                .get()
-                .then(album => {
+            const fetchMyAPI = async () => {
+                try {
+                    const album = await getArtistDepensAlbumApi(item.album)
                     setElementInfo({
                         ...album.data(),
                         id: album.id
                     })
                     getImage(`albums/${album.data().avatar}`);
-                })
+                } catch {}
+            };
+            fetchMyAPI()
         }
     }, [item])
 

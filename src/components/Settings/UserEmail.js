@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { Button, Form, Icon, Input } from 'semantic-ui-react'
 import alertErrors from '../../utils/AlertError';
-import { reAuthenticate } from "../../utils/Api";
-import firebase from '../../utils/Firebase';
-import "firebase/auth"
+import { logOutApi, reAuthenticateApi, sendEmailVerificationApi, updateEmailApi } from '../../services/apiConnection';
 
 export const UserEmail = ({ user, setShowModal, setTitleModal, setContentModal }) => {
 
@@ -29,7 +27,8 @@ const ChangeEmailForm = ({ email, setShowModal }) => {
     const [formData, setFormData] = useState({ email: email, password: '' })
     const [isLoading, setIsLoading] = useState(false)
 
-    const handlerSubmit = () => {
+    const handlerSubmit = (event) => {
+        event.preventDefault();
         const isValidEmail = (formData.email !== email && formData.email !== '')
         const isEqual = formData.email === email
 
@@ -42,24 +41,23 @@ const ChangeEmailForm = ({ email, setShowModal }) => {
         if (isValidEmail) {
             setIsLoading(true);
             //Asegura los credenciales mediante password
-            reAuthenticate(formData.password)
+            reAuthenticateApi(formData.password)
                 .then(() => {
-                    //Se actualiza el email
-                    firebase.auth()
-                        .currentUser
-                        .updateEmail(formData.email)
-                        .then(() => {
+                    const fetchMyAPI = async() => {
+                        try {
+                            await updateEmailApi(formData.email)//Se actualiza el email
                             toast.success("Email actualizado.")
                             setIsLoading(false)
                             setShowModal(false)
-                            //verificacion por email
-                            firebase.auth().currentUser.sendEmailVerification()
-                                .then(() => firebase.auth().signOut())
-                        })
-                        .catch(error => {
+                            //se envia verificacion por email
+                            await sendEmailVerificationApi()
+                            await logOutApi()
+                        } catch (error) {
                             alertErrors(error.code)
                             setIsLoading(false)
-                        })
+                        }
+                    };
+                    fetchMyAPI()
                 })
                 .catch(error => {
                     alertErrors(error?.code) 
