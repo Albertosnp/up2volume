@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import firebase from '../../../utils/Firebase';
 import { Image } from 'semantic-ui-react';
 import { AvatarArtist } from "../AvatarArtist/AvatarArtist"
-import "firebase/storage";
+import { getImageArtistApi } from "../../../services/apiConnection"
 
 import "./BannerArtist.scss";
-
 
 export const BannerArtist = ({ artist }) => {
     const [bannerUrl, setBannerUrl] = useState(null);
@@ -14,10 +12,7 @@ export const BannerArtist = ({ artist }) => {
     }
     //Saca la imagen de banner del artista con el id pasado
     useEffect(() => {
-        firebase
-            .storage()
-            .ref(`artists/banners/${artist?.banner}`)
-            .getDownloadURL()
+        getImageArtistApi(`artists/banners/${artist?.banner}`)
             .then(url => {
                 setBannerUrl(url)
             })
@@ -29,9 +24,7 @@ export const BannerArtist = ({ artist }) => {
             <div className="banner-artist__info">
                 <h4>Artista</h4>
                 <h1>{artist.name}</h1>
-                {/* {artist && <AvatarArtist artist={artist} />} */}
             </div>
-            {/* <Image src={bannerUrl} /> */}
         </div>
     )
 }

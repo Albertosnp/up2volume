@@ -154,9 +154,19 @@ export const updateNameUser = (name) => {
 };
 
 /* ------------------------------------- BannerHome -------------------------------- */
+//Recoge los banners principals de home
 export const downloadBannersApi = () => {
     return firebase
         .storage()
         .ref("others/banner-home.jpg")
         .getDownloadURL();
+};
+
+/* ---------------------------------- Artists ----------------------------------------- */
+//obtiene la imagen de la url pasada
+export const getImageArtistApi = (url) => {
+    return firebase
+        .storage()
+        .ref(url)
+        .getDownloadURL()
 };

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import firebase from '../../../utils/Firebase';
-import "firebase/storage";
+import { getImageArtistApi } from '../../../services/apiConnection';
 
 import "./AvatarArtist.scss";
 
@@ -10,18 +9,13 @@ export const AvatarArtist = ({ artist }) => {
         backgroundImage: `url('${avatarUrl}')`
     }
     useEffect(() => {
-        firebase
-            .storage()
-            .ref(`artists/avatars/${artist?.avatar}`)
-            .getDownloadURL()
+        getImageArtistApi(`artists/avatars/${artist?.avatar}`)
             .then(url => {
                 setAvatarUrl(url)
             });
     }, [artist])
 
     return (
-        <div className="avatar-artist" style={style}>
-            
-        </div>
+        <div className="avatar-artist" style={style}></div>
     )
 }

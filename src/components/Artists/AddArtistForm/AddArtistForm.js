@@ -10,7 +10,6 @@ import "firebase/firestore";
 
 import "./AddArtistForm.scss";
 
-
 //Se inicializa la bbdd pasandole mis credenciales de la app
 const bbdd = firebase.firestore(firebase);
 
