@@ -4,14 +4,9 @@ import {Dropzone} from "./Dropzone";
 import { Button, Form, Input } from 'semantic-ui-react';
 import NoImage from "../../../assets/png/no-image.png";
 import { v4 as uuidv4 } from 'uuid';
-import firebase from "../../../utils/Firebase";
-import "firebase/storage";
-import "firebase/firestore";
+import { uploadArtistApi, uploadGenericImageApi,  } from '../../../services/apiConnection';
 
 import "./AddArtistForm.scss";
-
-//Se inicializa la bbdd pasandole mis credenciales de la app
-const bbdd = firebase.firestore(firebase);
 
 //TODO: añadir genero de musica, descripcion...
 
@@ -30,9 +25,7 @@ export const AddArtistForm = ({ setShowModal }) => {
     })
 
     const styleBanner = { backgroundImage: `url('${urlBanner}')` }
-    const styleAvatar = {
-        backgroundImage: `url('${urlBanner ? urlBanner : NoImage}')`
-    }
+    const styleAvatar = { backgroundImage: `url('${urlBanner ? urlBanner : NoImage}')`}
 
     const handlerChange = (event) => {
         setFormData({
@@ -40,19 +33,7 @@ export const AddArtistForm = ({ setShowModal }) => {
             [event.target.name]: event.target.value.trim()
         })
     }
-    //Sube la imagen del artista a bbdd segun la colleccion pasada por parametro
-    const uploadImageArtist = (url, file) => {
-        const reference = firebase.storage().ref().child(url); //Se crea el uid en la coleccion artists de la bbdd
-        return reference.put(file); //Se sube-asocia la imagen a la bbdd con el uid 
-    };
-    //Sube el artista en la coleccion-tabla y asocia la imagen con el uid
-    const uploadArtist = (uidImageBanner, uidImageAvatar) => {
-        return bbdd.collection("artists").add({
-            name: formData.name,
-            banner: uidImageBanner,
-            avatar: uidImageAvatar
-        })
-    }
+
     //resetea valores del formulario
     const resetForm = () => {
         setFormData(initialForm);
@@ -77,9 +58,9 @@ export const AddArtistForm = ({ setShowModal }) => {
         try {
             const uidImageBanner = uuidv4();//Genera el uid unico para la imagen banner
             const uidImageAvatar = uuidv4();//Genera el uid unico para la imagen banner
-            await uploadImageArtist(`artists/banners/${uidImageBanner}`, fileBanner); //Sube el banner
-            await uploadImageArtist(`artists/avatars/${uidImageAvatar}`, fileAvatar); //Sube el avatar
-            await uploadArtist(uidImageBanner, uidImageAvatar); //Sube el artista
+            await uploadGenericImageApi(`artists/banners/${uidImageBanner}`, fileBanner); //Sube el banner
+            await uploadGenericImageApi(`artists/avatars/${uidImageAvatar}`, fileAvatar); //Sube el avatar
+            await uploadArtistApi(uidImageBanner, uidImageAvatar, formData.name); //Sube el artista
             resetForm(); //No es necesario
             toast.success("El artista se ha añadido correctamente.");
             setIsLoading(false);

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router';
 import { toast } from 'react-toastify';
-import firebase from '../../utils/Firebase';
-import "firebase/firestore";
-
-import "./Album.scss";
 import { Loader } from 'semantic-ui-react';
 import { HeaderAlbum } from '../../components/Albums/HeaderAlbum/HeaderAlbum';
 import { ListSongs } from '../../components/Songs/ListSongs/ListSongs';
+import { getAlbumApi, getSongsDependsAlbumApi, getImageApi, getArtistDepensItemApi } from '../../services/apiConnection';
 
-const bbdd = firebase.firestore(firebase);
+import "./Album.scss";
 
 const Album = ({ match, playerSong }) => {
     const [album, setAlbum] = useState(null);
@@ -17,11 +14,10 @@ const Album = ({ match, playerSong }) => {
     const [artist, setArtist] = useState(null);
     const [songs, setSongs] = useState([])
 
+    //Trae los temas segun el album pasado
     useEffect(() => {
         if (album){
-            bbdd.collection("songs")
-            .where("album", "==", album.id )
-            .get()
+            getSongsDependsAlbumApi(album.id)
             .then(songs => {
                 const arraySongs = [];
                 songs?.docs?.map(song => {
@@ -38,9 +34,7 @@ const Album = ({ match, playerSong }) => {
 
     //Obtiene el album con el id pasado 
     useEffect(() => {
-        bbdd.collection("albums")
-        .doc(match?.params?.id)
-        .get()
+        getAlbumApi(match?.params?.id)
         .then(album => {
             setAlbum({
                 ...album.data(),
@@ -53,10 +47,7 @@ const Album = ({ match, playerSong }) => {
     //Obtiene la imagen del album segun id pasado
     useEffect(() => {
         if (!album) return
-        firebase
-            .storage()
-            .ref(`albums/${album?.avatar}`)
-            .getDownloadURL()
+        getImageApi(`albums/${album?.avatar}`)
             .then(url => {
                 setUrlAvatar(url)
             })
@@ -66,9 +57,7 @@ const Album = ({ match, playerSong }) => {
     //Obtiene el artista segun el id pasado, añade al objeto su id
     useEffect(() => {
         if (!album) return;
-        bbdd.collection("artists")
-            .doc(album?.artist)
-            .get()
+        getArtistDepensItemApi(album?.artist)
             .then(artist => {
                 setArtist({
                     ...artist.data(),

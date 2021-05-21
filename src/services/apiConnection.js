@@ -56,7 +56,7 @@ export const getAlbumsOfArtistApi = (id_artist) => {
 };
 
 //Obtiene todos los artistas de la bbdd
-export const getAllOfAlbumsApi = () => {
+export const getAllOfArtistApi = () => {
     return bbdd.collection("artists")
         .get()
 };
@@ -91,17 +91,17 @@ export const getUrlAvatarApi = (url) => {
 };
 
 /* ------------------------------------- Song Slider -------------------------------- */
-//Obtiene el artista segun la cancion pasada
-export const getArtistDepensSongApi = (song) => {
+//Obtiene el artista segun el item pasado
+export const getArtistDepensItemApi = (item) => {
     return bbdd.collection("artists")
-        .doc(song)
+        .doc(item)
         .get()
 };
 
-//Obtiene el artista segun el album pasado
-export const getArtistDepensAlbumApi = (album) => {
+//Obtiene el album segun el id pasado
+export const getAlbumDepensIdApi = (id_album) => {
     return bbdd.collection("albums")
-        .doc(album)
+        .doc(id_album)
         .get()
 };
 
@@ -156,7 +156,7 @@ export const updateNameUser = (name) => {
 /* ------------------------------------- BannerHome -------------------------------- */
 //Recoge los banners principals de home
 export const downloadBannersApi = () => {
-    return firebase
+    return fireBase
         .storage()
         .ref("others/banner-home.jpg")
         .getDownloadURL();
@@ -164,9 +164,78 @@ export const downloadBannersApi = () => {
 
 /* ---------------------------------- Artists ----------------------------------------- */
 //obtiene la imagen de la url pasada
-export const getImageArtistApi = (url) => {
-    return firebase
+export const getImageApi = (url) => {
+    return fireBase
         .storage()
         .ref(url)
         .getDownloadURL()
+};
+
+//Sube la imagen generica a la bbdd segun la url pasada por parametro
+export const uploadGenericImageApi = (url, file) => {
+    const reference = fireBase.storage().ref().child(url); //Se crea el uid en la coleccion artists de la bbdd
+    return reference.put(file); //Se sube-asocia la imagen a la bbdd con el uid 
+};
+
+//Sube el artista en la coleccion-tabla y asocia la imagen con el uid
+export const uploadArtistApi = (uidImageBanner, uidImageAvatar, name) => {
+    return bbdd.collection("artists").add({
+        name: name,
+        banner: uidImageBanner,
+        avatar: uidImageAvatar
+    })
+}
+
+//Sube el album completo a la coleccion de albums
+export const uploadAlbumApi = (name, artist, fileName) => {
+    return bbdd.collection("albums")
+        .add({
+            name: name,
+            artist: artist,
+            avatar: fileName
+        })
+}
+
+/* --------------------------------------------- Logged Layout ------------------------------ */
+//retorna la url de la cancion con id pasado por parametro
+export const getUrlSongApi = (idSong) => {
+    return fireBase.storage()
+        .ref(`songs/${idSong}`)
+        .getDownloadURL()
+};
+
+/* --------------------------------------------- Album ------------------------------ */
+//retorna los temas segun el album pasado
+export const getSongsDependsAlbumApi = (id_album) => {
+    return bbdd.collection("songs")
+        .where("album", "==", id_album)
+        .get()
+};
+
+//retorna el album con el id pasado
+export const getAlbumApi = (id_album) => {
+    return bbdd.collection("albums")
+        .doc(id_album)
+        .get()
+};
+
+//Obtiene todos los albumes de la bbdd
+export const getAllOfAlbumsApi = () => {
+    return bbdd.collection("albums")
+        .get()
+};
+
+//Obtiene los singles del artista
+export const getSinglesOfArtistApi = (id_artist) => {
+    return bbdd.collection("songs")
+        .where("album", "==", "")
+        .where("artist", "==", id_artist)
+        .get()
+};
+
+//Obtiene los temas segun el album pasado
+export const getAllSongsForAlbumApi = (id_album) => {
+    return bbdd.collection("songs")
+        .where("album", "==", id_album)
+        .get()
 };

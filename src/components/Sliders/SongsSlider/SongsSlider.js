@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Slider from "react-slick";
 import { Card, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { getArtistDepensSongApi, getUrlAvatarApi, getArtistDepensAlbumApi } from '../../../services/apiConnection';
+import { getUrlAvatarApi, getAlbumDepensIdApi, getArtistDepensItemApi } from '../../../services/apiConnection';
 
 import "./SongsSlider.scss";
 
@@ -78,7 +78,7 @@ const Song = ({ item, playerSong }) => {
         if (item.album === '') {
             const fetchMyAPI = async () => {
                 try {
-                    const artist = await getArtistDepensSongApi(item.artist)
+                    const artist = await getArtistDepensItemApi(item.artist)
                     setElementInfo({
                         ...artist.data(),
                         id: artist.id
@@ -90,7 +90,7 @@ const Song = ({ item, playerSong }) => {
         } else {
             const fetchMyAPI = async () => {
                 try {
-                    const album = await getArtistDepensAlbumApi(item.album)
+                    const album = await getAlbumDepensIdApi(item.album)
                     setElementInfo({
                         ...album.data(),
                         id: album.id

@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import firebase from "../../utils/Firebase";
-import "firebase/firestore";
-
 import { Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { getAllOfArtistApi, getImageApi } from '../../services/apiConnection';
+import { toast } from 'react-toastify';
 
 import "./Artists.scss";
-import { toast } from 'react-toastify';
-const bbdd = firebase.firestore(firebase);
 
 export const Artists = () => {
     const [artists, setArtists] = useState([]);
+    
+    //Obtiene todos los artistas de la bbdd
     useEffect(() => {
-        bbdd.collection("artists")
-            .get()
+        getAllOfArtistApi()
             .then( response => {
                 const arrayArtists = [];
                 response?.docs?.map(artist => {
@@ -43,20 +41,16 @@ export const Artists = () => {
 
 const Artist = ({ artist }) => {
     const [avatarUrl, setAvatarUrl] = useState(null);
-
+    //Obtiene la imagen del artista
     useEffect(() => {
-        firebase
-            .storage()
-            .ref(`artists/avatars/${artist.avatar}`)
-            .getDownloadURL()
+        getImageApi(`artists/avatars/${artist.avatar}`)
             .then(url => {
                 setAvatarUrl(url)
             })
     }, [artist])
 
-    const style = {
-        backgroundImage: `url('${avatarUrl}')`
-    }
+    const style = { backgroundImage: `url('${avatarUrl}')` }
+    
     return (
         <Link to={`/artist/${artist.id}`} >
             <div className="artists__item">
@@ -64,6 +58,5 @@ const Artist = ({ artist }) => {
                 <h3>{artist.name}</h3>
             </div>
         </Link>
-        
     )
 };

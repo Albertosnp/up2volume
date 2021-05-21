@@ -4,6 +4,7 @@ import firebase from './utils/Firebase';
 import "firebase/auth"
 import { Auth } from './pages/Auth/Auth';
 import { LoggedLayout } from './layouts/LoggedLayout/LoggedLayout';
+import { logOutApi } from './services/apiConnection';
 
 
 function App() {
@@ -11,20 +12,18 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [reloadApp, setReloadApp] = useState(false)
 
+  //Comprueba si el usuario ha cambiado de estado -> verificacion de email
   firebase.auth().onAuthStateChanged(currentUser => {
     //Si el usuario ha confirmado el email... ( ? por si la propiedad no existieses )
     if (currentUser?.emailVerified) setUser(currentUser);
     else{
-      firebase.auth().signOut();
+      logOutApi() //deslogua porque no tiene el email verificado
       setUser(null);
     }
     setIsLoading(false);
-    
   });
 
-  if (isLoading) {
-    return null;
-  }
+  if (isLoading) return null;
 
   return(
     <>
@@ -42,6 +41,5 @@ function App() {
     </>
   )
 }
-
 
 export default App;

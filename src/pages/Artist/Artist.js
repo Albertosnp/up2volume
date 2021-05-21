@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router';
-import firebase from '../../utils/Firebase';
-import "firebase/firestore";
 import { BannerArtist } from '../../components/Artists/BannerArtist/BannerArtist';
 import { AvatarArtist } from '../../components/Artists/AvatarArtist/AvatarArtist';
 import { BasicSliderItems } from '../../components/Sliders/BasicSliderItems/BasicSliderItems';
-import "./Artist.scss";
 import { toast } from 'react-toastify';
 import { SongsSlider } from '../../components/Sliders/SongsSlider/SongsSlider';
 import { ListSongs } from '../../components/Songs/ListSongs/ListSongs';
+import { getAlbumsOfArtistApi, getAllSongsForAlbumApi, getArtistDepensItemApi, getSinglesOfArtistApi } from '../../services/apiConnection';
 
-
-const bbdd = firebase.firestore(firebase);
+import "./Artist.scss";
 
 // match es un parametro de los props que llegan gracias a withRouter
 const Artist = ({ match, playerSong }) => {
@@ -20,13 +17,10 @@ const Artist = ({ match, playerSong }) => {
     const [songs, setSongs] = useState([]);
     const [singles, setSingles] = useState([]);
     const [allSongs, setAllSongs] = useState([]);
-    const [statematch, setstatematch] = useState(match)
 
     //Saca el artista con el id pasado 
     useEffect(() => {
-        bbdd.collection("artists")
-            .doc(match?.params?.id)
-            .get()
+        getArtistDepensItemApi(match?.params?.id)
             .then(response => {
                 setArtist({
                     ...response.data(),
@@ -35,12 +29,10 @@ const Artist = ({ match, playerSong }) => {
             });
     }, [match])//match?.params?.id    
 
-    //Obtiene todos los albumes del artista y los guarda en el estado Albums
+    //Obtiene los albumes del artista y los guarda en el estado Albums
     useEffect(() => {
         if (!artist) return;
-        bbdd.collection("albums")
-            .where("artist", "==", artist.id)
-            .get()
+        getAlbumsOfArtistApi(artist.id)
             .then(albums => {
                 const arrayAlbums = [];
                 albums?.docs?.map(album => arrayAlbums.push({
@@ -51,14 +43,28 @@ const Artist = ({ match, playerSong }) => {
             })
             .catch(() => toast.warning("No se pudieron cargar los álbumes del artista."))
     }, [artist])
+
+    //carga en el estado todas las canciones por album
+    useEffect(() => {
+        const arraySongs = [];
+        albums.map(async album => {
+            getAllSongsForAlbumApi(album.id)//Obtiene los los temas segun el album
+                .then(response => {
+                    response?.docs.map(song => {
+                        arraySongs.push({
+                            ...song.data(),
+                            id: song.id
+                        })
+                    });
+                    setSongs(arraySongs);
+                })
+        }) 
+    }, [albums])
     
-    //Obtiene los singlesdel artista
-    const getAllSingles = async () => {
+    //carga ene el stado todos los singles del artista
+    useEffect(() => {
         if (!artist) return null;
-        await bbdd.collection("songs")
-            .where("album", "==", "")
-            .where("artist", "==", artist.id)
-            .get()
+        getSinglesOfArtistApi(artist.id)//Obtiene los singles del artista
             .then(response => {
                 const arraySingles = [];
                 response?.docs.map(song => {
@@ -69,44 +75,6 @@ const Artist = ({ match, playerSong }) => {
                 })
                 setSingles(arraySingles);
             })
-    
-    };
-
-    const getAllSongsForAlbum = async () => {
-        const arraySongs = [];
-        albums.map(async album => {
-            await bbdd.collection("songs")
-                .where("album", "==", album.id)
-                .get()
-                .then(response => {
-                    response?.docs.map(song => {
-                        arraySongs.push({
-                            ...song.data(),
-                            id: song.id
-                        })
-                    });
-                    setSongs(arraySongs);
-                })
-        })
-        
-    };
-    
-    //carga en el estado todas las canciones por album
-    useEffect(() => {
-        const autoExe = async () => {
-            await getAllSongsForAlbum();
-        };    
-        autoExe();
-        
-    }, [albums])
-    
-    //carga ene el stado todos los singles del artista
-    useEffect(() => {
-        const autoExe = async () => {
-            await getAllSingles(); 
-            
-        };    
-        autoExe();
     }, [songs])
 
     useEffect(() => {

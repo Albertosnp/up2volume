@@ -5,20 +5,15 @@ import { Routes } from '../../routes/Routes';
 import MenuLeft from '../../components/MenuLeft/MenuLeft';
 import TopBar from '../../components/TopBar/TopBar';
 import { Player } from '../../components/Player/Player';
-import firebase from '../../utils/Firebase';
-import "firebase/storage";
+import { getUrlSongApi } from '../../services/apiConnection';
 
 import "./LoggedLayout.scss";
-
 
 export const LoggedLayout = ({ user, setReloadApp }) => {
     const [songData, setSongData] = useState(null);
 
     const playerSong = (image, songName, idSong) => {
-        
-        firebase.storage()
-                .ref(`songs/${idSong}`)
-                .getDownloadURL()
+        getUrlSongApi(idSong)
                 .then(url => {
                     setSongData({
                         url,

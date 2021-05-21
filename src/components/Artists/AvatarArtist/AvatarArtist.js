@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getImageArtistApi } from '../../../services/apiConnection';
+import { getImageApi } from '../../../services/apiConnection';
 
 import "./AvatarArtist.scss";
 
@@ -9,7 +9,7 @@ export const AvatarArtist = ({ artist }) => {
         backgroundImage: `url('${avatarUrl}')`
     }
     useEffect(() => {
-        getImageArtistApi(`artists/avatars/${artist?.avatar}`)
+        getImageApi(`artists/avatars/${artist?.avatar}`)
             .then(url => {
                 setAvatarUrl(url)
             });

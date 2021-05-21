@@ -4,13 +4,10 @@ import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import { Button, Dropdown, Form, Image, Input } from 'semantic-ui-react';
-import firebase from '../../../utils/Firebase';
-import "firebase/storage";
+import { getAllOfArtistApi, uploadAlbumApi, uploadGenericImageApi } from '../../../services/apiConnection';
 
 import NoImage from "../../../assets/png/no-image.png";
 import "./AddAlbumForm.scss";
-
-const bbdd = firebase.firestore(firebase);
 
 const FORM_INITIAL_VALUE = {
     name: '',
@@ -29,9 +26,9 @@ export const AddAlbumForm = ({ setShowModal }) => {
     }
     //Trae todos los artistas para mostrarlos en el desplegable
     useEffect(() => {
-        bbdd.collection("artists")
-            .get()
-            .then(artists => {
+        const fetchMyAPI = async () => {
+            try {
+                const artists = await getAllOfArtistApi()
                 const arrayArtists = [];
                 artists?.docs?.map(artist => {
                     const data = artist.data();
@@ -44,8 +41,11 @@ export const AddAlbumForm = ({ setShowModal }) => {
                     arrayArtists.push(artistMod);
                 });
                 setArtists(arrayArtists);
-            })
-            .catch(() => toast.warning("Ups... Algo salió mal."))
+            } catch (error) {
+                toast.warning("Ups... Algo salió mal.")
+            }
+        };
+        fetchMyAPI()
     }, [])
     
     const onDrop = useCallback(acceptedFile => {
@@ -58,7 +58,7 @@ export const AddAlbumForm = ({ setShowModal }) => {
         setImgAlbum(URL.createObjectURL(fileUploated));
     })
 
-    const { getRootProps, getInputProps, } = useDropzone({
+    const { getRootProps, getInputProps } = useDropzone({
         accept: "image/jpeg, image/png",
         noKeyboard: true,
         onDrop
@@ -78,24 +78,6 @@ export const AddAlbumForm = ({ setShowModal }) => {
         
     };
 
-    // Crea la referencia de donde (ruta) y con que nombre se va a subir el fichero
-    const uploadImage = (fileName) => {
-        const ref = firebase 
-                        .storage()
-                        .ref()
-                        .child(`albums/${fileName}`);
-        return ref.put(file); // Sube el fichero a la ruta especificada               
-    };
-    //Sube el album completo a la coleccion de albums
-    const uploadAlbum = (fileName) => {
-        bbdd.collection("albums")
-            .add({
-                name: formData.name,
-                artist: formData.artist,
-                avatar: fileName
-            })
-    };
-
     const handlerSubmit = async (event) => {
         event.preventDefault();
         //Validacion de campos
@@ -106,13 +88,13 @@ export const AddAlbumForm = ({ setShowModal }) => {
         setIsLoading(true);
         const fileName = uuidv4()//crea un id unico que será el nombre de la imagen del album
         try {
-            await uploadImage(fileName);
+            await uploadGenericImageApi(`albums/${fileName}`, file);
         } catch {
             toast.warning("No se pudo subir la imagen del album.");
             setIsLoading(false);
         }
         try {
-            await uploadAlbum(fileName);
+            await uploadAlbumApi(formData.name, formData.artist, fileName);
             toast.success("El album se ha creado con éxito.")
             resetForm();
         } catch {

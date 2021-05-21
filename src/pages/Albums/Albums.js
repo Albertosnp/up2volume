@@ -2,22 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Grid, Loader } from 'semantic-ui-react';
-import firebase from '../../utils/Firebase';
-import "firebase/firestore";
+import { getAllOfAlbumsApi, getImageApi } from '../../services/apiConnection';
 
 import "./Albums.scss";
 
-const bbdd = firebase.firestore(firebase);
-
 export const Albums = () => {
     const [albumes, setAlbumes] = useState([]);
-
+    //Obtiene todos los albumes 
     useEffect(() => {
-        bbdd.collection("albums")
-            .get()
+        getAllOfAlbumsApi()
             .then(albums => {
                 const arrayAlbums = [];
-                albums?.docs?.map( album => {
+                albums?.docs?.map(album => {
                     const objectAlbum = album.data();
                     objectAlbum.id = album.id;
                     arrayAlbums.push(objectAlbum);
@@ -27,7 +23,7 @@ export const Albums = () => {
             .catch(() => {
                 toast.warning("No se pudieron cargar los Álbumes.");
             })
-            
+
     }, [])
 
     //Para mostrar mensaje de loading al usuario
@@ -40,9 +36,9 @@ export const Albums = () => {
             <Grid>
                 {albumes.map(album => (
                     <Grid.Column key={album.id} mobile={8} tablet={4} computer={3}>
-                        <Album  album={album} />
+                        <Album album={album} />
                     </Grid.Column>
-                     ))
+                ))
                 }
             </Grid>
         </div>
@@ -53,19 +49,17 @@ const Album = ({ album, setImages }) => {
     const [avatarUrl, setAvatarUrl] = useState(null);
 
     const style = {
-            backgroundImage: `url('${avatarUrl}')`
+        backgroundImage: `url('${avatarUrl}')`
     }
     //Recoge la imagen del album de la bbdd
     useEffect(() => {
-        firebase.storage()
-        .ref(`albums/${album.avatar}`)
-        .getDownloadURL()
-        .then(avatarAlbum => {
-            setAvatarUrl(avatarAlbum);
-        })
-        .catch(() => toast.warning("No se pudo cargar la imagen del Álbum.")) 
+        getImageApi(`albums/${album.avatar}`)
+            .then(avatarAlbum => {
+                setAvatarUrl(avatarAlbum);
+            })
+            .catch(() => toast.warning("No se pudo cargar la imagen del Álbum."))
     }, [])
-    
+
 
     return (
         <Link to={`/album/${album.id}`} >
@@ -74,6 +68,5 @@ const Album = ({ album, setImages }) => {
                 <h3>{album.name}</h3>
             </div>
         </Link>
-        
     )
 };

@@ -3,7 +3,7 @@ import { Button, Dropdown, Form, Icon, Input } from 'semantic-ui-react';
 import { toast } from 'react-toastify';
 import { useDropzone } from 'react-dropzone';
 import { v4 as uuidv4 } from 'uuid';
-import { getAlbumsOfArtistApi, getAllOfAlbumsApi, uploadDataSongApi, uploadFileApi } from '../../../services/apiConnection';
+import { getAlbumsOfArtistApi, getAllOfArtistApi, uploadDataSongApi, uploadFileApi } from '../../../services/apiConnection';
 import "./AddSongForm.scss"
 
 const INITIAL_FORM = {
@@ -45,7 +45,7 @@ export const AddSongForm = ({ setShowModal }) => {
     useEffect(() => {
         const fetchMyAPI = async () => {
             try {
-                const artists = await getAllOfAlbumsApi()
+                const artists = await getAllOfArtistApi()
                 const arrayArtists = [];
                 artists?.docs?.map(artist => {
                     arrayArtists.push({

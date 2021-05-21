@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Image } from 'semantic-ui-react';
 import { AvatarArtist } from "../AvatarArtist/AvatarArtist"
-import { getImageArtistApi } from "../../../services/apiConnection"
+import { getImageApi } from "../../../services/apiConnection"
 
 import "./BannerArtist.scss";
 
@@ -12,7 +12,7 @@ export const BannerArtist = ({ artist }) => {
     }
     //Saca la imagen de banner del artista con el id pasado
     useEffect(() => {
-        getImageArtistApi(`artists/banners/${artist?.banner}`)
+        getImageApi(`artists/banners/${artist?.banner}`)
             .then(url => {
                 setBannerUrl(url)
             })
