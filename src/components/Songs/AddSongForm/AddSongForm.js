@@ -96,7 +96,7 @@ export const AddSongForm = ({ setShowModal }) => {
             setIsLoading(false);
             setShowModal(false);
             setFormData(INITIAL_FORM);
-        } catch {
+        } catch (err){
             toast.warning("Hubo un error al guardar el tema.");
             setIsLoading(false);
         }

@@ -72,12 +72,14 @@ export const uploadFileApi = (idFile, file) => {
 
 //Sube a la bbdd la informacion del tema
 export const uploadDataSongApi = (idFile, name, album, id_artist) => {
+    const date = firebase.firestore.Timestamp.fromDate(new Date());
     bbdd.collection("songs")
         .add({
             name: name,
             album: album,
             fileName: idFile,
-            artist: id_artist
+            artist: id_artist,
+            date: date
         })
 };
 
@@ -179,20 +181,24 @@ export const uploadGenericImageApi = (url, file) => {
 
 //Sube el artista en la coleccion-tabla y asocia la imagen con el uid
 export const uploadArtistApi = (uidImageBanner, uidImageAvatar, name) => {
+    const date = firebase.firestore.Timestamp.fromDate(new Date());
     return bbdd.collection("artists").add({
         name: name,
         banner: uidImageBanner,
-        avatar: uidImageAvatar
+        avatar: uidImageAvatar,
+        date: date
     })
 }
 
 //Sube el album completo a la coleccion de albums
 export const uploadAlbumApi = (name, artist, fileName) => {
+    const date = firebase.firestore.Timestamp.fromDate(new Date());
     return bbdd.collection("albums")
         .add({
             name: name,
             artist: artist,
-            avatar: fileName
+            avatar: fileName,
+            date: date
         })
 }
 
@@ -237,5 +243,30 @@ export const getSinglesOfArtistApi = (id_artist) => {
 export const getAllSongsForAlbumApi = (id_album) => {
     return bbdd.collection("songs")
         .where("album", "==", id_album)
+        .get()
+};
+
+/* ------------------------------------------- Home ---------------------------------------------- */
+//Devuelve las ultimas 10 canciones añadidas
+export const getLast10Songs = () => {
+    return bbdd.collection("songs")
+        .orderBy("date", "desc")
+        .limit(10)
+        .get()
+};
+
+//Devuelve los utimos 10 albumes añadidas
+export const getLast10Albums = () => {
+    return bbdd.collection("albums")
+        .orderBy("date", "desc")
+        .limit(10)
+        .get()
+};
+
+//Devuelve los utimos 10 artistas añadidas
+export const getLast10Artists = () => {
+    return bbdd.collection("artists")
+        .orderBy("date", "desc")
+        .limit(10)
         .get()
 };
