@@ -8,7 +8,8 @@ export const BannerHome = () => {
     const [bannerUrl, setBannerUrl] = useState(null);
 
     const style = {
-        backgroundImage: `url('${bannerUrl}')`
+        backgroundImage: `url('${bannerUrl}')`,
+        //backgroundSize: 'contain'
     }
     //Recupera los banners principales
     useEffect(() => {
@@ -26,6 +27,7 @@ export const BannerHome = () => {
     if (!bannerUrl) return null;
     return (
         <div className="banner-home" style={style}>
+
         </div>
     )
 }

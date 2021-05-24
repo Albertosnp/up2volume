@@ -70,6 +70,8 @@ export const Player = ({ songData }) => {
         setDuration(duration)
     };
 
+
+
     return (
         <div className="player">
             <Grid>
@@ -102,7 +104,7 @@ export const Player = ({ songData }) => {
                 </Grid.Column>
                 <Grid.Column width={4} className="right">
                     <Input
-                        label={<Icon name="volume up" />}
+                        label={<Icon name="volume up" onClick={()=>console.log("muted")}/>}
                         type="range"
                         max={1}
                         min={0}

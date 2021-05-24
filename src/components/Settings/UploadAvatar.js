@@ -12,6 +12,7 @@ export const UploadAvatar = ({ user, setReloadApp }) => {
   const onDrop = useCallback((acceptedFiles) => {
     
     const file = acceptedFiles[0]; 
+    if (!file) return toast.warning("El avatar no tiene un formato permitido ( jpg / png )");
     const isGoodSize = (300000 > file.size)
     
     if (isGoodSize) {

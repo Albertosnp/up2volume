@@ -14,6 +14,7 @@ export const Dropzone = ({ file, setUrl, classNameField, classNameDiv, setWholeF
         noKeyboard: true,
         onDrop: (acceptedFile) => {
             const fileUploated = acceptedFile[0];
+            if (!fileUploated) return toast.warning("La imagen no tiene un formato permitido ( jpg / png )");
             //VAlida que la imagen exceda de 1 Mb
             const isGoodSize = (1000000 > fileUploated.size)
             if (!isGoodSize) return toast.warning("La imagen no puede exceder de 1Mb");

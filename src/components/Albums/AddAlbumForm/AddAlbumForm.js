@@ -50,6 +50,8 @@ export const AddAlbumForm = ({ setShowModal }) => {
     
     const onDrop = useCallback(acceptedFile => {
         const fileUploated = acceptedFile[0];
+        console.log(fileUploated);
+        if (!fileUploated) return toast.warning("La imagen del album no tiene un formato correcto")
         //VAlida que la imagen exceda de 1 Mb
         const isGoodSize = (1000000 > fileUploated.size)
         if (!isGoodSize) return toast.warning("La imagen no puede exceder de 1Mb");
