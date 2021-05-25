@@ -7,7 +7,6 @@ import { Artists } from '../pages/Artists/Artists'
 import { Home } from '../pages/Home/Home'
 import { Settings } from '../pages/Settings/Settings'
 
-
 export const Routes = ({ user, setReloadApp, playerSong }) => {
     return (
         <Switch>

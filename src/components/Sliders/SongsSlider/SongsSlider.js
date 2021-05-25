@@ -114,7 +114,7 @@ const Song = ({ item, playerSong }) => {
                 <div className="object__card">
                     <Card className="basic-slider-items__list-item"
                         image={avatar} />
-                    <Icon name="play circle outline" onClick={onPlay}/>
+                    <Icon name="play circle" onClick={onPlay}/>
                     <Link to={`/artist/${elementInfo?.id}`} >
                         <h4>{item.name}</h4>
                     </Link>

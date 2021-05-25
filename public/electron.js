@@ -15,7 +15,7 @@ function createWindow() {
     minHeight: 800,
     //resizable: false,
     title: "up2volume",
-    titleBarStyle: "hiddenInset",
+    //titleBarStyle: "hiddenInset",
     //skipTaskbar: true,
     webPreferences: {
       devTools: false
