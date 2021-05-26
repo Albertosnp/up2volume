@@ -13,6 +13,7 @@ export const logOutApi = () => {
 };
 
 /* --------------------------------------  Register Form ----------------------------------- */
+//TODO
 //Conecta con Firebase y Registra el nombre de usuario en la bbdd del user actual
 export const changeUserNameApi = (userName) => {
     fireBase.auth().currentUser.updateProfile({
@@ -269,4 +270,23 @@ export const getLast10Artists = () => {
         .orderBy("date", "desc")
         .limit(10)
         .get()
+};
+
+/* -------------------------------------- Eliminar ---------------------------------- */
+//Borra el tema pasado por parametro
+export const deleteDataSongApi = (id_song) => {
+    return bbdd.collection("songs")
+        .doc(id_song)
+        .delete()
+};
+
+export const deleteFileSongApi = (id) => {
+    const reference = fireBase
+        .storage()
+        .ref()
+        .child(`songs/${id}`);
+
+    reference.delete()
+    .then(() => toast.success("Se ha eliminado con exito"))
+    .catch(() => toast.warning("No se ha podido eliminar el fichero"))
 };

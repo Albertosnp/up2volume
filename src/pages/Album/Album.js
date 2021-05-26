@@ -8,7 +8,7 @@ import { getAlbumApi, getSongsDependsAlbumApi, getImageApi, getArtistDepensItemA
 
 import "./Album.scss";
 
-const Album = ({ match, playerSong }) => {
+const Album = ({ match, playerSong, userAdmin }) => {
     const [album, setAlbum] = useState(null);
     const [urlAvatar, setUrlAvatar] = useState(null)
     const [artist, setArtist] = useState(null);
@@ -75,7 +75,7 @@ const Album = ({ match, playerSong }) => {
         <div className="album">
             <HeaderAlbum artist={artist} album={album} urlAvatar={urlAvatar} />
             <div className="album__songs">
-                <ListSongs songs={songs} urlAvatar={urlAvatar} playerSong={playerSong} title="Titulo" />
+                <ListSongs songs={songs} urlAvatar={urlAvatar} playerSong={playerSong} userAdmin={userAdmin} title="Titulo" />
             </div>
         </div>
     )

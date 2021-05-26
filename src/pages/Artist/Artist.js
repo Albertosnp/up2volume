@@ -7,11 +7,13 @@ import { toast } from 'react-toastify';
 import { SongsSlider } from '../../components/Sliders/SongsSlider/SongsSlider';
 import { ListSongs } from '../../components/Songs/ListSongs/ListSongs';
 import { getAlbumsOfArtistApi, getAllSongsForAlbumApi, getArtistDepensItemApi, getSinglesOfArtistApi } from '../../services/apiConnection';
+import { isUserAdmin } from '../../utils/Api';
 
 import "./Artist.scss";
 
 // match es un parametro de los props que llegan gracias a withRouter
-const Artist = ({ match, playerSong }) => {
+const Artist = ({ match, playerSong, userAdmin }) => {
+
     const [artist, setArtist] = useState();
     const [albums, setAlbums] = useState([]);
     const [songs, setSongs] = useState([]);
@@ -58,9 +60,9 @@ const Artist = ({ match, playerSong }) => {
                     });
                     setSongs(arraySongs);
                 })
-        }) 
+        })
     }, [albums])
-    
+
     //carga ene el stado todos los singles del artista
     useEffect(() => {
         if (!artist) return null;
@@ -86,9 +88,10 @@ const Artist = ({ match, playerSong }) => {
         <div className="artist">
             {artist && <BannerArtist artist={artist} />}
             {artist && <AvatarArtist artist={artist} />}
-            <div className="artist__content">
+            {userAdmin && "Borrar Artista" }
+            <div className="artist__content">    
                 <div className="album__songs">
-                    <ListSongs songs={singles} playerSong={playerSong} title="Singles"/>
+                    <ListSongs songs={singles} playerSong={playerSong} title="Singles" userAdmin={userAdmin}/>
                 </div>
                 <BasicSliderItems
                     title="Álbumes"

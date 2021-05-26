@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router'
 import Album from '../pages/Album/Album'
 import { Albums } from '../pages/Albums/Albums'
@@ -6,8 +6,15 @@ import Artist from '../pages/Artist/Artist'
 import { Artists } from '../pages/Artists/Artists'
 import { Home } from '../pages/Home/Home'
 import { Settings } from '../pages/Settings/Settings'
+import { isUserAdmin } from '../utils/Api'
 
 export const Routes = ({ user, setReloadApp, playerSong }) => {
+    const [userAdmin, setUserAdmin] = useState(false)
+    //Verifica si es administrador
+    useEffect(() => {
+        isUserAdmin(user.uid)
+            .then(response => setUserAdmin(response))
+    }, [user]);
     return (
         <Switch>
             <Route path="/" exact >
@@ -23,10 +30,10 @@ export const Routes = ({ user, setReloadApp, playerSong }) => {
                 <Settings user={user} setReloadApp={setReloadApp}/>
             </Route>
             <Route path="/album/:id" exact >
-                <Album playerSong={playerSong} />
+                <Album playerSong={playerSong} userAdmin={userAdmin} />
             </Route>
             <Route path="/artist/:id" exact >
-                <Artist playerSong={playerSong}/>
+                <Artist playerSong={playerSong} userAdmin={userAdmin} />
             </Route>
         </Switch>
     )
