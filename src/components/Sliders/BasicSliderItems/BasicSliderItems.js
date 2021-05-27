@@ -8,7 +8,7 @@ import "./BasicSliderItems.scss";
 
 //Componente Slider que muestra albums. artistas, canciones...
 export const BasicSliderItems = ({ title, data, folderImage, urlName}) => {
-    //ajustes del slider -> semantic-ui
+    //ajustes del slider -> react slick
     const settings = {
         className: "basic-slider-items__list",
         infinite: true,

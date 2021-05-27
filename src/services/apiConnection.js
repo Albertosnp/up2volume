@@ -157,11 +157,11 @@ export const updateNameUser = (name) => {
 };
 
 /* ------------------------------------- BannerHome -------------------------------- */
-//Recoge los banners principals de home
-export const downloadBannersApi = () => {
+//Recoge el banner pasado por parametro para home
+export const downloadBannersApi = (file) => {
     return fireBase
         .storage()
-        .ref("others/banner-home.jpg")
+        .ref(`others/${file}`)
         .getDownloadURL();
 };
 
@@ -280,6 +280,7 @@ export const deleteDataSongApi = (id_song) => {
         .delete()
 };
 
+//Elimina los ficheros de la storage
 export const deleteFileSongApi = (id) => {
     const reference = fireBase
         .storage()
