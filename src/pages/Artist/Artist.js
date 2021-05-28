@@ -78,7 +78,7 @@ const Artist = ({ match, playerSong, userAdmin }) => {
                 setSingles(arraySingles);
             })
     }, [songs])
-
+    
     useEffect(() => {
         if (!songs || !singles) return null
         setAllSongs([...songs, ...singles]);
@@ -88,7 +88,7 @@ const Artist = ({ match, playerSong, userAdmin }) => {
         <div className="artist">
             {artist && <BannerArtist artist={artist} />}
             {artist && <AvatarArtist artist={artist} />}
-            {userAdmin && "Borrar Artista" }
+            {/* {userAdmin && "Borrar Artista" } */}
             <div className="artist__content">    
                 <div className="album__songs">
                     <ListSongs songs={singles} playerSong={playerSong} title="Singles" userAdmin={userAdmin}/>

@@ -5,6 +5,9 @@ import { getUrlAvatarApi, getArtistDepensItemApi, deleteDataSongApi, deleteFileS
 import "./ListSongs.scss";
 
 export const ListSongs = ({ songs, playerSong, title, userAdmin }) => {
+    useEffect(() => {
+
+    }, [songs])
     if (songs.length <= 0) return null
     return (
         <>

@@ -43,7 +43,7 @@ export const BasicSliderItems = ({ title, data, folderImage, urlName}) => {
     }
     //Si el array no tiene suficientes elementos no se muestra
     if(data.length < 4) return null; 
-    
+
     return (
         <div className="basic-slider-items">
         <h2>{title}</h2>

@@ -37,9 +37,9 @@ export const BannerHome = () => {
     if (!bannerUrls) return null;
     return (
         <div className="banner-home">
-            <Slider {...settings} className="sliderClass" >
+            <Slider {...settings}  >
                 {
-                    bannerUrls.map(url => <Image src={url} />)
+                    bannerUrls.map(url => <Image key={url} src={url} className="sliderClass"/>)
                 }
             </Slider>
         </div>
