@@ -10,7 +10,11 @@ node_modules
 
 # production
 /build
-
+/.firebase
+/public2
+.firebaserc
+firebase.json
+/.github
 # misc
 .DS_Store
 .env.local
