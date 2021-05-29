@@ -129,9 +129,7 @@ export const updateUserAvatarApi = (urlAvatar) => {
 
 //Devuelve el objeto usuario en bruto
 export const reAuthenticateApi = (password) => {
-    console.log(password);
     const user = firebase.auth().currentUser; //Objeto firebase distinto
-    console.log(user);
     const credentials = firebase.auth.EmailAuthProvider.credential(user.email, password);//Objeto firebase distinto
 
     return user.reauthenticateWithCredential(credentials);
