@@ -13,13 +13,11 @@ export const logOutApi = () => {
 };
 
 /* --------------------------------------  Register Form ----------------------------------- */
-//TODO
 //Conecta con Firebase y Registra el nombre de usuario en la bbdd del user actual
 export const changeUserNameApi = (userName) => {
     fireBase.auth().currentUser.updateProfile({
         displayName: userName
-    })
-        .catch(() => toast.error("Error al asignar el nombre de usuario."))
+    }).catch(() => toast.error("Error al asignar el nombre de usuario."))
 };
 
 //Enviar el email para verificar la cuenta 
