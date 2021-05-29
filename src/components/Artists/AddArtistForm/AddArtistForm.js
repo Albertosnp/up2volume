@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import {Dropzone} from "./Dropzone";
 import { Button, Form, Input } from 'semantic-ui-react';
-import NoImage from "../../../assets/png/no-image.png";
+import NoImageAvatar from "../../../assets/png/no-avatar.png";
+import NoImageBanner from "../../../assets/png/no-banner.png";
 import { v4 as uuidv4 } from 'uuid';
 import { uploadArtistApi, uploadGenericImageApi,  } from '../../../services/apiConnection';
 
@@ -24,8 +25,8 @@ export const AddArtistForm = ({ setShowModal }) => {
         preview: null
     })
 
-    const styleBanner = { backgroundImage: `url('${urlBanner}')` }
-    const styleAvatar = { backgroundImage: `url('${urlBanner ? urlBanner : NoImage}')`}
+    const styleBanner = { backgroundImage: `url('${urlBanner? urlBanner : NoImageBanner}')`}
+    const styleAvatar = { backgroundImage: `url('${urlBanner ? urlBanner : NoImageAvatar}')`}
 
     const handlerChange = (event) => {
         setFormData({
@@ -71,14 +72,13 @@ export const AddArtistForm = ({ setShowModal }) => {
         }
     };
 
-    //TODO: añadir descripcion a los campos para el usuario -> banner y avatar 
     return (
         <Form className="add-artist-form" onSubmit={handlerSubmit} onChange={handlerChange}>
             <Dropzone classNameField={"artist-banner"} classNameDiv={"banner"} 
-                file={urlBanner} setUrl={setUrlBanner} 
+                file={urlBanner} setUrl={setUrlBanner} imageDefault={NoImageBanner}
                 styleMod={styleBanner}  setWholeFile={setFileBanner} />
             <Dropzone classNameField={"artist-avatar"} classNameDiv={"avatar"} 
-                file={urlAvatar} setUrl={setUrlAvatar} 
+                file={urlAvatar} setUrl={setUrlAvatar} imageDefault={NoImageAvatar}
                 styleMod={styleAvatar} setWholeFile={setFileAvatar} />
             <Form.Field>
                 <Input placeholder="Nombre del artista" name="name" />

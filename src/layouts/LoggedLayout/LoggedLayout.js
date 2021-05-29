@@ -33,7 +33,7 @@ export const LoggedLayout = ({ user, setReloadApp }) => {
                     </Grid.Column>
                     <Grid.Column className="content" width={13}>
                         <TopBar user={user}/>
-                        <Routes to="/" user={user} setReloadApp={setReloadApp} playerSong={playerSong} />
+                        <Routes user={user} setReloadApp={setReloadApp} playerSong={playerSong} />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>

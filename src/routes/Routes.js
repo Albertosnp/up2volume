@@ -16,10 +16,7 @@ export const Routes = ({ user, setReloadApp, playerSong }) => {
             .then(response => setUserAdmin(response))
     }, [user]);
     return (
-        <Switch>
-            <Route path="/" exact >
-                <Home playerSong={playerSong} />
-            </Route>
+        <Switch> 
             <Route path="/artists" exact >
                 <Artists />
             </Route>
@@ -34,6 +31,9 @@ export const Routes = ({ user, setReloadApp, playerSong }) => {
             </Route>
             <Route path="/artist/:id" exact >
                 <Artist playerSong={playerSong} userAdmin={userAdmin} />
+            </Route>
+            <Route path="/" >
+                <Home playerSong={playerSong} />
             </Route>
         </Switch>
     )

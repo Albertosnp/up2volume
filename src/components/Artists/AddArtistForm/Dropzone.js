@@ -1,11 +1,10 @@
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-toastify';
 import {  Form, Image } from 'semantic-ui-react';
-import NoImage from "../../../assets/png/no-image.png";
 
 import "./AddArtistForm.scss";
 
-export const Dropzone = ({ file, setUrl, classNameField, classNameDiv, setWholeFile }) => {
+export const Dropzone = ({ file, setUrl, classNameField, classNameDiv, setWholeFile, imageDefault }) => {
     const {
         getRootProps,
         getInputProps,
@@ -30,7 +29,7 @@ export const Dropzone = ({ file, setUrl, classNameField, classNameDiv, setWholeF
         <Form.Field className={classNameField} >
             <div className={classNameDiv} {...getRootProps()} style={{ backgroundImage: `url('${file.content}')` }}>
                 <input {...getInputProps()} />
-                {!file.content &&<Image src={NoImage} />}
+                {!file.content &&<Image src={imageDefault} />}
             </div>
         </Form.Field>  
     )

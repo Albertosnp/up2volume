@@ -24,10 +24,10 @@ function App() {
   });
 
   if (isLoading) return null;
-
+  
   return(
     <>
-      { user ? <LoggedLayout user={user} setReloadApp={setReloadApp} /> : <Auth /> }
+      { user ? <LoggedLayout to="/" user={user} setReloadApp={setReloadApp} /> : <Auth /> }
       <ToastContainer
         position="top-center"
         autoClose={5000}

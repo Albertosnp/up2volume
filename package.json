@@ -1,13 +1,10 @@
 {
   "name": "up2volume",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "main": "public/electron.js",
   "author": "Alberto Sánchez de la Nieta Pérez",
   "homepage": "./",
-  "win": {
-    "icon": "./public/icons/icono.ico"
-  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -66,6 +63,12 @@
   },
   "build": {
     "appId": "com.albertosnp.up2volume",
+    "win": {
+      "icon": "build/icono.png"
+    },
+    "mac": {
+      "icon": "build/icono.png"
+    },
     "files": [
       "build/**/*",
       "node_modules/**/*"
