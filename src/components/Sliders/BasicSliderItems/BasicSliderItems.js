@@ -13,7 +13,7 @@ export const BasicSliderItems = ({ title, data, folderImage, urlName}) => {
         className: "basic-slider-items__list",
         infinite: true,
         centerPadding: "60px",
-        slidesToShow: 5,
+        slidesToShow: 4,
         swipeToSlide: true,
         responsive: [
           {
