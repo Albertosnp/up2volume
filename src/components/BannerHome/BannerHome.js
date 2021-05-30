@@ -26,7 +26,7 @@ export const BannerHome = () => {
                 const banner3 = await downloadBannersApi('banner3.png');
                 const banner4 = await downloadBannersApi('banner4.png');
                 const banner5 = await downloadBannersApi('banner5.png');
-                setBannerUrls([banner1, banner2, banner3, banner4, banner5]); 
+                setBannerUrls([banner5, banner2, banner3, banner4, banner1]); 
             } catch (error) {
                 alertErrors(error.code);
             }

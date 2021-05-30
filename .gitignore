@@ -11,7 +11,7 @@ node_modules
 # production
 /build
 /.firebase
-/public2
+/web
 .firebaserc
 firebase.json
 /.github
