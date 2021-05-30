@@ -62,7 +62,7 @@ export const Player = ({ songData }) => {
             let decimal = duration % 1
             let entero = Math.floor(duration)
             entero += 1
-            decimal = decimal * 10
+            //decimal = decimal * 10
             decimal = decimal.toFixed(1) % 1
             decimal = decimal / 10
             duration = entero + decimal
