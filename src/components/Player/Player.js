@@ -128,7 +128,7 @@ export const Player = ({ songData }) => {
                     width="0"
                     volume={volume}
                     onProgress={onProgress}
-                    onDuration={onDuration}
+                    onDuration={onDuration}                
                 />
             </Grid>
         </div>

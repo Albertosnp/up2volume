@@ -9,6 +9,20 @@ import "./Artists.scss";
 export const Artists = () => {
     const [artists, setArtists] = useState([]);
     
+    //Para ordenar los artistas por fecha de alta
+    const orderAlbumsByDate = (arrayAlbums) => {
+        const arrayOrdenado = arrayAlbums.sort(function (album1, album2) {
+                if (album1.date < album2.date) { //comparación lexicogŕafica
+                    return 1;
+                } 
+                if (album1.date > album2.date) {
+                    return -1;
+                } 
+                return 0;
+            });
+        return arrayOrdenado    
+    };
+
     //Obtiene todos los artistas de la bbdd
     useEffect(() => {
         getAllOfArtistApi()
@@ -19,7 +33,8 @@ export const Artists = () => {
                     data.id = artist.id;
                     arrayArtists.push(data);
                 });
-                setArtists(arrayArtists);
+                const arrayOrdenado = orderAlbumsByDate(arrayArtists)
+                setArtists(arrayOrdenado);
             })
             .catch(() => toast.warning("No se pudieron cargar los Artistas."))            
     }, [])

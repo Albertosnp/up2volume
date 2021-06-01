@@ -70,7 +70,7 @@ export const Home = ({ playerSong }) => {
                     folderImage="albums"
                     urlName="album" />
                 <SongsSlider
-                    title="Últimas temas añadidos"
+                    title="Últimos temas"
                     data={songs}
                     playerSong={playerSong}
                 />

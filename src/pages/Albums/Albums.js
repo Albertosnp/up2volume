@@ -8,6 +8,21 @@ import "./Albums.scss";
 
 export const Albums = () => {
     const [albumes, setAlbumes] = useState([]);
+
+    //Para ordenar los albumes alfabeticamente
+    const orderAlbumsByName = (arrayAlbums) => {
+        const arrayOrdenado = arrayAlbums.sort(function (album1, album2) {
+                if (album1.name > album2.name) { //comparación lexicogŕafica
+                    return 1;
+                } 
+                if (album1.name < album2.name) {
+                    return -1;
+                } 
+                return 0;
+            });
+        return arrayOrdenado    
+    };
+
     //Obtiene todos los albumes 
     useEffect(() => {
         getAllOfAlbumsApi()
@@ -18,7 +33,8 @@ export const Albums = () => {
                     objectAlbum.id = album.id;
                     arrayAlbums.push(objectAlbum);
                 })
-                setAlbumes(arrayAlbums);
+                const arrayOrdenado = orderAlbumsByName(arrayAlbums)
+                setAlbumes(arrayOrdenado);
             })
             .catch(() => {
                 toast.warning("No se pudieron cargar los Álbumes.");
