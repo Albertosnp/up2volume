@@ -9,7 +9,7 @@
     width: 100%;
     padding-top: 50px;
 
-
+  
     .item,
     a.item{
         color: $font-grey;
@@ -17,7 +17,6 @@
         font-size: 16px;
         border-left: 4px solid transparent;
         width: 100%;
-
         &:hover,
         &.active {
             color: $font-light !important;
