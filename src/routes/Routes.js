@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Route, Switch } from 'react-router'
+import { Redirect, Route, Switch } from 'react-router'
 import Album from '../pages/Album/Album'
 import { Albums } from '../pages/Albums/Albums'
 import Artist from '../pages/Artist/Artist'
@@ -32,9 +32,10 @@ export const Routes = ({ user, setReloadApp, playerSong }) => {
             <Route path="/artist/:id" exact >
                 <Artist playerSong={playerSong} userAdmin={userAdmin} />
             </Route>
-            <Route path="/" >
+            <Route path="/" exact>
                 <Home playerSong={playerSong} />
             </Route>
+            <Redirect to="/" />
         </Switch>
     )
 }

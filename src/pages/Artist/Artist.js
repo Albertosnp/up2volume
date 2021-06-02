@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { withRouter } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
 import { BannerArtist } from '../../components/Artists/BannerArtist/BannerArtist';
 import { AvatarArtist } from '../../components/Artists/AvatarArtist/AvatarArtist';
 import { BasicSliderItems } from '../../components/Sliders/BasicSliderItems/BasicSliderItems';
@@ -10,10 +10,11 @@ import { getAlbumsOfArtistApi, getAllSongsForAlbumApi, getArtistDepensItemApi, g
 import { isUserAdmin } from '../../utils/Api';
 
 import "./Artist.scss";
+import { Loader } from 'semantic-ui-react';
 
 // match es un parametro de los props que llegan gracias a withRouter
 const Artist = ({ match, playerSong, userAdmin }) => {
-
+    const [exist, setExist] = useState(true)
     const [artist, setArtist] = useState();
     const [albums, setAlbums] = useState([]);
     const [songs, setSongs] = useState([]);
@@ -23,14 +24,15 @@ const Artist = ({ match, playerSong, userAdmin }) => {
     //Saca el artista con el id pasado 
     useEffect(() => {
         getArtistDepensItemApi(match?.params?.id)
-            .then(response => {
+            .then(artist => {
+                if (!artist.exists) setExist(false)
                 setArtist({
-                    ...response.data(),
-                    id: response.id
+                    ...artist.data(),
+                    id: artist.id
                 })
             });
     }, [match])//match?.params?.id    
-
+    
     //Obtiene los albumes del artista y los guarda en el estado Albums
     useEffect(() => {
         if (!artist) return;
@@ -84,13 +86,18 @@ const Artist = ({ match, playerSong, userAdmin }) => {
         setAllSongs([...songs, ...singles]);
     }, [songs, singles])
 
+    if (!exist) return <Redirect to="/"/>
+    //Para mostrar mensaje de loading al usuario
+    const isLoading = (!artist)
+    if (isLoading) return <Loader active >Cargando</Loader>
+
     return (
         <div className="artist">
             {artist && <BannerArtist artist={artist} />}
             {artist && <AvatarArtist artist={artist} />}
             {/* {userAdmin && "Borrar Artista" } */}
             <div className="artist__content">    
-                <div className="album__songs">
+                <div className="artist__singlesSongs">
                     <ListSongs songs={singles} playerSong={playerSong} title="Singles" userAdmin={userAdmin}/>
                 </div>
                 <BasicSliderItems

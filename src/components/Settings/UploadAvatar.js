@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import AvatarDefault from "../../assets/png/user.png";
 import { getUrlAvatarApi, uploadImageApi, updateUserAvatarApi } from "../../services/apiConnection";
 
+import "./UploadAvatar.scss"
+
 export const UploadAvatar = ({ user, setReloadApp }) => {
   const [avatarUrl, setAvatarUrl] = useState(user.photoUrl);
 
@@ -55,7 +57,7 @@ export const UploadAvatar = ({ user, setReloadApp }) => {
       {isDragActive ? (
         <Image src={AvatarDefault} />
       ) : ( 
-        <Image src={user.photoURL ? user.photoURL : AvatarDefault} />
+        <Image src={user.photoURL ? user.photoURL : AvatarDefault} className="classAvatar"/>
       )}
     </div>
   );

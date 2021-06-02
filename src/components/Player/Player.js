@@ -13,13 +13,13 @@ export const Player = ({ songData }) => {
     const [seconds, setSeconds] = useState(0)
     const [minutes, setMinutes] = useState(0)
     const [totalMinutes, setTotalMinutes] = useState('')
+    const [muted, setMuted] = useState(false)
 
     useEffect(() => {
         if (!songData?.url) return;
         onStart()
         setMinutes(0)
         setSeconds(0)
-
     }, [songData])
 
     const onStart = () => {
@@ -71,10 +71,12 @@ export const Player = ({ songData }) => {
     };
 
     const toggleMuted = (event, data) => {
-        if (volume !== 0) {
+        if (!muted) {
             setVolume(0)
+            setMuted(true)
             return 
         }
+        setMuted(false)
         setVolume(0.5)
     };
     
@@ -128,7 +130,8 @@ export const Player = ({ songData }) => {
                     width="0"
                     volume={volume}
                     onProgress={onProgress}
-                    onDuration={onDuration}                
+                    onDuration={onDuration} 
+                    muted={muted}             
                 />
             </Grid>
         </div>

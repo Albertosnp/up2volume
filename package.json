@@ -56,6 +56,7 @@
     ]
   },
   "devDependencies": {
+    "babel-plugin-polyfill-corejs2": "^0.2.2",
     "concurrently": "^6.0.2",
     "electron": "^12.0.4",
     "electron-builder": "^22.10.5",
@@ -78,9 +79,11 @@
     },
     "extraFiles": [
       {
-          "from": "src/assets/",
-          "to": "src/assets/",
-          "filter": ["**/*"]
+        "from": "src/assets/",
+        "to": "src/assets/",
+        "filter": [
+          "**/*"
+        ]
       }
     ]
   }

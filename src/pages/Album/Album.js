@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { withRouter } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
 import { toast } from 'react-toastify';
 import { Loader } from 'semantic-ui-react';
 import { HeaderAlbum } from '../../components/Albums/HeaderAlbum/HeaderAlbum';
@@ -9,6 +9,7 @@ import { getAlbumApi, getSongsDependsAlbumApi, getImageApi, getArtistDepensItemA
 import "./Album.scss";
 
 const Album = ({ match, playerSong, userAdmin }) => {
+    const [exist, setExist] = useState(true)
     const [album, setAlbum] = useState(null);
     const [urlAvatar, setUrlAvatar] = useState(null)
     const [artist, setArtist] = useState(null);
@@ -36,12 +37,13 @@ const Album = ({ match, playerSong, userAdmin }) => {
     useEffect(() => {
         getAlbumApi(match?.params?.id)
         .then(album => {
+            if (!album.exists) setExist(false)
             setAlbum({
                 ...album.data(),
                 id: album.id
             })
         })
-        .catch(() => toast.warning("No se pudo cargar el álbum."));
+        .catch(() => {toast.warning("No se pudo cargar el álbum.")});
     }, [match])
 
     //Obtiene la imagen del album segun id pasado
@@ -66,6 +68,8 @@ const Album = ({ match, playerSong, userAdmin }) => {
             })
             .catch(() => toast.warning("Error al cargar el nombre del artista."))
     }, [album])
+
+    if (!exist) return <Redirect to="/"/>
 
     //Para mostrar mensaje de loading al usuario
     const isLoading = (!album || !artist)

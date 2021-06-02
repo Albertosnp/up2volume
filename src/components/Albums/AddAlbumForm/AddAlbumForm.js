@@ -1,4 +1,3 @@
-import { set, uniqueId } from 'lodash-es';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-toastify';

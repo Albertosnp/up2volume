@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Loader } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { getAllOfArtistApi, getImageApi } from '../../services/apiConnection';
 import { toast } from 'react-toastify';
@@ -63,9 +63,18 @@ const Artist = ({ artist }) => {
                 setAvatarUrl(url)
             })
     }, [artist])
+    
+    if (!avatarUrl) {
+        return (
+            <Link to={`/artist/${artist.id}`} >
+                <div className="artists__item">
+                    <Loader className="avatar" active indeterminate style={{ color: "white" }}>Cargando...</Loader>
+                </div>
+            </Link>
+        )
+    }
 
     const style = { backgroundImage: `url('${avatarUrl}')` }
-    
     return (
         <Link to={`/artist/${artist.id}`} >
             <div className="artists__item">

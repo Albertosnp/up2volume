@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Grid, Loader } from 'semantic-ui-react';
+import { Dimmer, Grid, Loader } from 'semantic-ui-react';
 import { getAllOfAlbumsApi, getImageApi } from '../../services/apiConnection';
 
 import "./Albums.scss";
@@ -12,15 +12,15 @@ export const Albums = () => {
     //Para ordenar los albumes alfabeticamente
     const orderAlbumsByName = (arrayAlbums) => {
         const arrayOrdenado = arrayAlbums.sort(function (album1, album2) {
-                if (album1.name > album2.name) { //comparación lexicogŕafica
-                    return 1;
-                } 
-                if (album1.name < album2.name) {
-                    return -1;
-                } 
-                return 0;
-            });
-        return arrayOrdenado    
+            if (album1.name > album2.name) { //comparación lexicogŕafica
+                return 1;
+            }
+            if (album1.name < album2.name) {
+                return -1;
+            }
+            return 0;
+        });
+        return arrayOrdenado
     };
 
     //Obtiene todos los albumes 
@@ -64,9 +64,6 @@ export const Albums = () => {
 const Album = ({ album, setImages }) => {
     const [avatarUrl, setAvatarUrl] = useState(null);
 
-    const style = {
-        backgroundImage: `url('${avatarUrl}')`
-    }
     //Recoge la imagen del album de la bbdd
     useEffect(() => {
         getImageApi(`albums/${album.avatar}`)
@@ -76,7 +73,16 @@ const Album = ({ album, setImages }) => {
             .catch(() => toast.warning("No se pudo cargar la imagen del Álbum."))
     }, [])
 
-
+    if (!avatarUrl) {
+        return (
+            <Link to={`/album/${album.id}`} >
+                <div className="albums__item">
+                    <Loader className="avatar" active indeterminate style={{ color: "white" }}>Cargando...</Loader>
+                </div>
+            </Link>
+        )
+    }
+    const style = {backgroundImage: `url('${avatarUrl}')`}
     return (
         <Link to={`/album/${album.id}`} >
             <div className="albums__item">
