@@ -15,6 +15,7 @@ export const BannerHome = () => {
         speed: 1000,
         autoplaySpeed: 5000,
         cssEase: "linear",
+        arrows: false
       };
 
     //Recupera los banners principales
