@@ -84,7 +84,7 @@ export const Player = ({ songData }) => {
         <div className="player">
             <Grid>
                 <Grid.Column width={6} className="left">
-                    <Image src={songData?.image} />
+                    {songData &&(<Image src={songData?.image} />)}
                     {songData?.name}
                 </Grid.Column>
                 <Grid.Column width={6} className="center">

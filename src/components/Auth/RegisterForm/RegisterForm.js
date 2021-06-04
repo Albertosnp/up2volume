@@ -90,6 +90,21 @@ const RegisterForm = ({ setSelectedForm }) => {
                 <Form.Field>
                     <Input
                         type="text"
+                        name="userName"
+                        placeholder="¿Cómo deberíamos llamarte?"
+                        icon="user circle outline"
+                        value={formData.userName}
+                        error={formError.userName}
+                    />
+                    {formError.userName ?
+                        (<span className="error-text">Por favor, introduce un nombre de ususario válido</span>)
+                        :
+                        ""
+                    }
+                </Form.Field>
+                <Form.Field>
+                    <Input
+                        type="text"
                         name="email"
                         placeholder="Email"
                         icon="mail outline"
@@ -121,22 +136,7 @@ const RegisterForm = ({ setSelectedForm }) => {
                         :
                         ""
                     }
-                </Form.Field>
-                <Form.Field>
-                    <Input
-                        type="text"
-                        name="userName"
-                        placeholder="Como deberíamos llamarte?"
-                        icon="user circle outline"
-                        value={formData.userName}
-                        error={formError.userName}
-                    />
-                    {formError.userName ?
-                        (<span className="error-text">Por favor, introduce un nombre de ususario válido</span>)
-                        :
-                        ""
-                    }
-                </Form.Field>
+                </Form.Field>   
                 <Button loading={isLoading} >Continuar</Button>
             </Form>
             <div className="register-form__options">
