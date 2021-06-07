@@ -284,6 +284,14 @@ export const deleteFileSongApi = (id) => {
         .child(`songs/${id}`);
 
     reference.delete()
-    .then(() => toast.success("Se ha eliminado con exito"))
-    .catch(() => toast.warning("No se ha podido eliminar el fichero"))
+        .then(() => toast.success("Se ha eliminado con exito"))
+        .catch(() => toast.warning("No se ha podido eliminar el fichero"))
+};
+
+/* --------------------------------- Busquedas --------------------------------------- */
+export const getArtistsForSearchApi = (search) => {
+    return bbdd.collection("artists")
+            .where('name', '>=', search)
+            .where('name', '<=', search)
+            .get()
 };

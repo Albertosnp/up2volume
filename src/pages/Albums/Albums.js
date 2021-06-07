@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Dimmer, Grid, Loader } from 'semantic-ui-react';
+import { Dropdown, Grid, Loader } from 'semantic-ui-react';
 import { getAllOfAlbumsApi, getImageApi } from '../../services/apiConnection';
+
 
 import "./Albums.scss";
 
 export const Albums = () => {
     const [albumes, setAlbumes] = useState([]);
-
+    const [album, setAlbum] = useState(null)
     //Para ordenar los albumes alfabeticamente
     const orderAlbumsByName = (arrayAlbums) => {
         const arrayOrdenado = arrayAlbums.sort(function (album1, album2) {
@@ -31,6 +32,9 @@ export const Albums = () => {
                 albums?.docs?.map(album => {
                     const objectAlbum = album.data();
                     objectAlbum.id = album.id;
+                    objectAlbum.key = album.id;
+                    objectAlbum.value =  album.id;
+                    objectAlbum.text = album.data().name
                     arrayAlbums.push(objectAlbum);
                 })
                 const arrayOrdenado = orderAlbumsByName(arrayAlbums)
@@ -42,13 +46,35 @@ export const Albums = () => {
 
     }, [])
 
+    const handlerChangeArtist = (event, data) => {
+        //data solo viene con el dropdown
+        setAlbum({
+            'id': data.value
+        })
+    };
+
     //Para mostrar mensaje de loading al usuario
     const isLoading = (!albumes)
     if (isLoading) return <Loader active >Cargando</Loader>
 
+    //Si selecciona un artista desde dropdown
+    if (album) return <Redirect to={`/album/${album.id}`} />
+
     return (
         <div className="albums">
-            <h1>Álbumes</h1>
+            <div className="artists__header">
+                <h1>Álbumes</h1>
+                <Dropdown
+                    placeholder="Álbumes disponibles..."
+                    search
+                    selection
+                    lazyLoad
+                    defaultValue=''
+                    options={albumes}
+                    onChange={handlerChangeArtist}
+                    icon="search"
+                />
+            </div>
             <Grid>
                 {albumes.map(album => (
                     <Grid.Column key={album.id} mobile={8} tablet={4} computer={3}>

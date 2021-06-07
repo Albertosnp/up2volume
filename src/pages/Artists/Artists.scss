@@ -1,5 +1,60 @@
 @import "../../scss/index.scss";
 
+.artists{
+    &__header {
+        border-bottom: 1px solid $border-grey-light;
+        margin-bottom: 50px;
+        padding-bottom: 10px;
+        > h1 {
+            font-size: 40px;
+        }
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.ui.search.selection.dropdown {
+    border: none !important;
+    background-color: $background-grey  !important;
+
+    .selected {
+        color: $font-light !important;
+    }
+
+    .search {
+      color: $font-light;
+    }
+
+    .icon{
+      color: $font-light;
+      font-size: 14px;
+    }
+
+    .menu {
+      background-color: $background-grey-dark;
+      border: 0;
+
+      .item{
+        color: $font-light !important;
+        border-top: .5px $background-grey-light-hover !important;
+      }
+      .item:hover,
+      .item:active,
+      .item:focus,
+      .item::after {
+          background-color: $background-grey-light-hover !important;
+          color: $font-light;
+        }
+
+      .message {
+        color: $font-light !important;
+      }
+    }
+
+}
+
 .artists {
     margin: 50px;
 
