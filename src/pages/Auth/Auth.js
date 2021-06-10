@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import AuthOptions from "../../components/Auth/AuthOptions/AuthOptions";
 import RegisterForm from "../../components/Auth/RegisterForm";
 import LoginForm from "../../components/Auth/LoginForm";
-import BackGroundAuth from "../../assets/jpg/background-auth.jpg"
 import BackGroundAuth2 from "../../assets/png/fondo.png"
 import LogoNameWhite from "../../assets/png/logo-blanco.png"
 
